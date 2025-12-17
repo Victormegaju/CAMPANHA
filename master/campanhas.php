@@ -153,9 +153,10 @@ $campanhas = $stmtCampanhas;
         }
     }
     
+    /* Rounded Corners Modern Theme */
     .stat-card {
         background: #1e1e2d;
-        border-radius: 15px;
+        border-radius: 20px;
         padding: 25px;
         position: relative;
         overflow: hidden;
@@ -223,9 +224,10 @@ $campanhas = $stmtCampanhas;
         }
     }
     
+    /* Rounded Modern Theme */
     .campanhas-section {
         background: #1e1e2d;
-        border-radius: 15px;
+        border-radius: 20px;
         padding: 25px;
         border: 1px solid #2d2d3a;
     }
@@ -410,7 +412,7 @@ $campanhas = $stmtCampanhas;
     
     .sidebar-card {
         background: #1e1e2d;
-        border-radius: 15px;
+        border-radius: 20px;
         padding: 25px;
         border: 1px solid #2d2d3a;
     }
@@ -441,7 +443,7 @@ $campanhas = $stmtCampanhas;
         padding: 15px;
         background: #2d2d3a;
         border: 1px solid #3d3d4a;
-        border-radius: 10px;
+        border-radius: 15px;
         color: #fff;
         text-decoration: none;
         transition: all 0.2s;
@@ -841,7 +843,7 @@ $campanhas = $stmtCampanhas;
 <!-- Modal de Confirmação de Exclusão -->
 <div class="modal fade" id="modalExcluir" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="background: #1e1e2d; border: 1px solid #2d2d3a;">
+        <div class="modal-content" style="background: #1e1e2d; border: 1px solid #2d2d3a; border-radius: 20px;">
             <div class="modal-header border-0">
                 <h5 class="modal-title text-white"><i class="fas fa-exclamation-triangle text-danger mr-2"></i>Confirmar Exclusão</h5>
                 <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
@@ -852,8 +854,8 @@ $campanhas = $stmtCampanhas;
                 <p class="text-muted">Esta ação não pode ser desfeita. Todos os arquivos de mídia serão removidos.</p>
             </div>
             <div class="modal-footer border-0">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-danger" id="confirmarExclusao">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="border-radius: 10px;">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmarExclusao" style="border-radius: 10px;">
                     <i class="fas fa-trash mr-1"></i> Excluir Campanha
                 </button>
             </div>

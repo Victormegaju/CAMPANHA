@@ -92,9 +92,10 @@ $totalConversas = $stmtTotalConversas->fetchColumn();
         .stats-row { grid-template-columns: 1fr; }
     }
     
+    /* Modern Rounded Theme */
     .stat-card {
         background: #1e1e2d;
-        border-radius: 15px;
+        border-radius: 20px;
         padding: 25px;
         border: 1px solid #2d2d3a;
     }
@@ -143,10 +144,10 @@ $totalConversas = $stmtTotalConversas->fetchColumn();
         background: #00a884;
     }
     
-    /* Content Section */
+    /* Content Section - Rounded Theme */
     .contatos-section {
         background: #1e1e2d;
-        border-radius: 15px;
+        border-radius: 20px;
         padding: 25px;
         border: 1px solid #2d2d3a;
     }
@@ -176,7 +177,7 @@ $totalConversas = $stmtTotalConversas->fetchColumn();
     
     .contato-item {
         background: #2d2d3a;
-        border-radius: 10px;
+        border-radius: 15px;
         padding: 15px 20px;
         margin-bottom: 10px;
         display: flex;
@@ -240,10 +241,11 @@ $totalConversas = $stmtTotalConversas->fetchColumn();
     .tab-content { display: none; }
     .tab-content.active { display: block; }
     
-    /* Modal */
+    /* Modal - Modern Rounded Centered */
     .modal-dark .modal-content {
         background: #1e1e2d;
         border: 1px solid #2d2d3a;
+        border-radius: 20px;
     }
     
     .modal-dark .modal-header { border-bottom: 1px solid #2d2d3a; }
@@ -259,7 +261,7 @@ $totalConversas = $stmtTotalConversas->fetchColumn();
         border: 1px solid #3d3d4a;
         color: #fff;
         padding: 12px 15px;
-        border-radius: 8px;
+        border-radius: 12px;
     }
     
     .form-group-dark input::placeholder { color: #6a6a7a; }
@@ -320,7 +322,7 @@ $totalConversas = $stmtTotalConversas->fetchColumn();
         <!-- Header -->
         <div class="page-header">
             <div class="page-title">
-                <h1><i class="fas fa-address-book mr-2" style="color: #00a884;"></i> Contatos para Campanhas</h1>
+                <h1><i class="fas fa-address-book mr-2" style="color: #9c27b0;"></i> Contatos para Campanhas</h1>
                 <p>Gerencie seus contatos do WhatsApp e adicione novos manualmente</p>
             </div>
             

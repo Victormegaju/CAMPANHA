@@ -88,8 +88,7 @@ $clientes = $stmtClientes;
 
 <style>
     .wizard-container {
-        max-width: 1400px;
-        margin: 0 auto;
+        max-width: 100%;
         padding: 20px;
     }
     
@@ -180,10 +179,10 @@ $clientes = $stmtClientes;
         font-weight: 600;
     }
     
-    /* Wizard Content */
+    /* Wizard Content - Rounded Theme */
     .wizard-content {
         background: #1e1e2d;
-        border-radius: 15px;
+        border-radius: 20px;
         padding: 30px;
         border: 1px solid #2d2d3a;
     }
@@ -225,7 +224,7 @@ $clientes = $stmtClientes;
     
     .stat-mini-card {
         background: #2d2d3a;
-        border-radius: 12px;
+        border-radius: 15px;
         padding: 20px;
         text-align: center;
         border: 1px solid #3d3d4a;
@@ -279,7 +278,7 @@ $clientes = $stmtClientes;
         border: 1px solid #3d3d4a;
         color: #fff;
         padding: 12px 15px;
-        border-radius: 10px;
+        border-radius: 12px;
         font-size: 0.9rem;
     }
     
@@ -336,7 +335,7 @@ $clientes = $stmtClientes;
     
     .contact-item {
         background: #2d2d3a;
-        border-radius: 10px;
+        border-radius: 15px;
         padding: 15px 20px;
         margin-bottom: 10px;
         display: flex;
@@ -458,7 +457,7 @@ $clientes = $stmtClientes;
         min-height: 200px;
         background: #2d2d3a;
         border: 1px solid #3d3d4a;
-        border-radius: 10px;
+        border-radius: 15px;
         padding: 15px;
         color: #fff;
         font-size: 0.95rem;
@@ -493,7 +492,7 @@ $clientes = $stmtClientes;
     .upload-box {
         background: #2d2d3a;
         border: 2px dashed #3d3d4a;
-        border-radius: 10px;
+        border-radius: 15px;
         padding: 20px;
         display: flex;
         align-items: center;
@@ -577,7 +576,7 @@ $clientes = $stmtClientes;
         gap: 12px;
         padding: 15px;
         background: #2d2d3a;
-        border-radius: 10px;
+        border-radius: 15px;
         margin-bottom: 10px;
         cursor: pointer;
         border: 1px solid #3d3d4a;
@@ -614,7 +613,7 @@ $clientes = $stmtClientes;
     
     .instance-card {
         background: #2d2d3a;
-        border-radius: 12px;
+        border-radius: 15px;
         padding: 20px;
         border: 2px solid #3d3d4a;
         cursor: pointer;
@@ -702,13 +701,13 @@ $clientes = $stmtClientes;
         border: 1px solid #3d3d4a;
         color: #fff;
         padding: 15px;
-        border-radius: 10px;
+        border-radius: 12px;
         font-size: 0.95rem;
     }
     
     .delay-config {
         background: #2d2d3a;
-        border-radius: 12px;
+        border-radius: 15px;
         padding: 20px;
         border: 1px solid #3d3d4a;
     }
@@ -747,7 +746,7 @@ $clientes = $stmtClientes;
     /* Summary Section */
     .summary-card {
         background: #2d2d3a;
-        border-radius: 12px;
+        border-radius: 15px;
         padding: 25px;
         border: 1px solid #3d3d4a;
     }
@@ -834,10 +833,11 @@ $clientes = $stmtClientes;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     }
     
-    /* Delay Modal */
+    /* Delay Modal - Modern Rounded */
     .delay-modal .modal-content {
         background: #1e1e2d;
         border: 1px solid #2d2d3a;
+        border-radius: 20px;
     }
     
     .delay-modal .modal-header {
@@ -921,11 +921,11 @@ $clientes = $stmtClientes;
         
         <!-- Breadcrumb -->
         <div class="breadcrumb-nav">
-            <i class="fas fa-plus-circle" style="color: #00a884;"></i>
+            <i class="fas fa-plus-circle" style="color: #28a745;"></i>
             <a href="campanhas">Campanhas</a> - <?= $campanha_id > 0 ? 'Editar Campanha' : 'Nova Campanha' ?>
         </div>
         
-        <h1 class="page-title"><i class="fas fa-bullhorn" style="color: #00a884; margin-right: 10px;"></i><?= $campanha_id > 0 ? 'Editar Campanha WhatsApp' : 'Nova Campanha WhatsApp' ?></h1>
+        <h1 class="page-title"><i class="fas fa-bullhorn" style="color: #28a745; margin-right: 10px;"></i><?= $campanha_id > 0 ? 'Editar Campanha WhatsApp' : 'Nova Campanha WhatsApp' ?></h1>
         
         <!-- Stepper -->
         <div class="wizard-stepper">
@@ -956,7 +956,7 @@ $clientes = $stmtClientes;
                 <!-- Step 1: Selecionar Destinatários -->
                 <div class="wizard-step active" data-step="1">
                     <h3 class="section-title">
-                        <i class="fas fa-users"></i>
+                        <i class="fas fa-users" style="color: #007bff;"></i>
                         Selecionar Destinatários
                     </h3>
                     
@@ -1112,7 +1112,7 @@ $clientes = $stmtClientes;
                 <!-- Step 2: Compor Mensagem -->
                 <div class="wizard-step" data-step="2">
                     <h3 class="section-title">
-                        <i class="far fa-comment-dots"></i>
+                        <i class="far fa-comment-dots" style="color: #f6ad55;"></i>
                         Compor Mensagem
                     </h3>
                     
@@ -1186,7 +1186,7 @@ $clientes = $stmtClientes;
                 <!-- Step 3: Selecionar Instância -->
                 <div class="wizard-step" data-step="3">
                     <h3 class="section-title">
-                        <i class="fab fa-whatsapp"></i>
+                        <i class="fab fa-whatsapp" style="color: #25D366;"></i>
                         Selecionar Instância(s) WhatsApp
                     </h3>
                     
@@ -1244,7 +1244,7 @@ $clientes = $stmtClientes;
                 <!-- Step 4: Agendar -->
                 <div class="wizard-step" data-step="4">
                     <h3 class="section-title">
-                        <i class="far fa-calendar-alt"></i>
+                        <i class="far fa-calendar-alt" style="color: #9c27b0;"></i>
                         Definir Data e Hora
                     </h3>
                     

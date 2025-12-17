@@ -388,13 +388,18 @@ function importarContatosWhatsApp($connect, $cod_id) {
         $stmtConn->execute([$cod_id]);
         $conn = $stmtConn->fetch(PDO::FETCH_OBJ);
         
-        if (!$conn || $conn->conn != 1) {
+        if (!$conn) {
+            echo json_encode(['success' => false, 'message' => 'Nenhuma conexão encontrada. Configure seu WhatsApp primeiro.']);
+            return;
+        }
+        
+        if ($conn->conn != 1) {
             echo json_encode(['success' => false, 'message' => 'WhatsApp não está conectado. Acesse a página QR Code primeiro.']);
             return;
         }
         
         // Usar apikey da conexão se disponível, senão usar global
-        $key_to_use = $conn->apikey ?: $apikey;
+        $key_to_use = !empty($conn->apikey) ? $conn->apikey : $apikey;
         $instanceName = 'AbC123' . $user->tokenapi;
         
         // Buscar chats/contatos da API Evolution
@@ -408,17 +413,38 @@ function importarContatosWhatsApp($connect, $cod_id) {
         
         $response = curl_exec($curl);
         $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $curlError = curl_error($curl);
         curl_close($curl);
         
-        if ($httpCode !== 200) {
-            echo json_encode(['success' => false, 'message' => 'Erro ao conectar com Evolution API']);
+        if ($curlError) {
+            echo json_encode(['success' => false, 'message' => 'Erro de conexão: ' . $curlError]);
             return;
+        }
+        
+        if ($httpCode !== 200) {
+            // Try alternative endpoint for contacts
+            $curl2 = curl_init();
+            curl_setopt_array($curl2, [
+                CURLOPT_URL => $urlapi . '/chat/findContacts/' . $instanceName,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTPHEADER => ['apikey: ' . $key_to_use],
+            ]);
+            
+            $response = curl_exec($curl2);
+            $httpCode = curl_getinfo($curl2, CURLINFO_HTTP_CODE);
+            curl_close($curl2);
+            
+            if ($httpCode !== 200) {
+                echo json_encode(['success' => false, 'message' => 'Erro ao conectar com Evolution API (HTTP ' . $httpCode . '). Verifique se a instância está conectada.']);
+                return;
+            }
         }
         
         $chats = json_decode($response, true);
         
         if (!is_array($chats)) {
-            echo json_encode(['success' => false, 'message' => 'Resposta inválida da API']);
+            echo json_encode(['success' => false, 'message' => 'Resposta inválida da API: ' . substr($response, 0, 100)]);
             return;
         }
         
@@ -435,18 +461,24 @@ function importarContatosWhatsApp($connect, $cod_id) {
                 continue;
             }
             
-            $telefone = preg_replace('/[^0-9]/', '', $chat['id'] ?? '');
-            $nome = $chat['name'] ?? $chat['pushName'] ?? '';
+            // Handle different response formats
+            $chatId = $chat['id'] ?? $chat['remoteJid'] ?? '';
+            $telefone = preg_replace('/[^0-9]/', '', $chatId);
+            $nome = $chat['name'] ?? $chat['pushName'] ?? $chat['verifiedName'] ?? '';
             $nomePush = $chat['pushName'] ?? '';
-            $origem = isset($chat['isContact']) && $chat['isContact'] ? 'salvo' : 'conversa';
+            $origem = (isset($chat['isContact']) && $chat['isContact']) || (isset($chat['isMyContact']) && $chat['isMyContact']) ? 'salvo' : 'conversa';
             
-            if (!empty($telefone)) {
+            if (!empty($telefone) && strlen($telefone) >= 10) {
                 $stmtInsert->execute([$cod_id, $telefone, $nome, $nomePush, $origem]);
                 $importados++;
             }
         }
         
-        echo json_encode(['success' => true, 'message' => "$importados contatos importados/atualizados"]);
+        if ($importados == 0) {
+            echo json_encode(['success' => true, 'message' => 'Nenhum contato novo encontrado para importar']);
+        } else {
+            echo json_encode(['success' => true, 'message' => "$importados contatos importados/atualizados"]);
+        }
         
     } catch (Exception $e) {
         echo json_encode(['success' => false, 'message' => 'Erro: ' . $e->getMessage()]);
