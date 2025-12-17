@@ -883,10 +883,10 @@ $clientes = $stmtClientes;
         <!-- Breadcrumb -->
         <div class="breadcrumb-nav">
             <i class="far fa-calendar-alt"></i>
-            <a href="campanhas">Campanhas</a> - Nova Campanha
+            <a href="campanhas">Campanhas</a> - <?= $campanha_id > 0 ? 'Editar Campanha' : 'Nova Campanha' ?>
         </div>
         
-        <h1 class="page-title">Nova Campanha WhatsApp</h1>
+        <h1 class="page-title"><?= $campanha_id > 0 ? 'Editar Campanha WhatsApp' : 'Nova Campanha WhatsApp' ?></h1>
         
         <!-- Stepper -->
         <div class="wizard-stepper">
