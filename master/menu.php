@@ -23,13 +23,10 @@
   if (isset($dadosgerais->tipo) && $dadosgerais->tipo == 1) {
     $menuItems[] = ["name" => "Usuários SAAS", "path" => "usuarios", "icon" =>  $url_base . "/master/icon/usuarios.png", "activeOn" => ["usuarios", "cad_usuario", "edit_usuario", "painel_usuario"]];
   }
-// ... código existente ...
-$menuItems[] = ["name" => "WhatsApp", "path" => "whatsapp", "icon" => $url_base . "/master/icon/whatsapp.png", "activeOn" => ["whatsapp"]];
 
-// ADICIONE ESTA LINHA:
-$menuItems[] = ["name" => "Campanhas", "path" => "campanhas", "icon" => $url_base . "/master/icon/notificacoes.png", "activeOn" => ["campanhas", "nova_campanha"]];
-
-// ... restante do código ...
+  // Marketing / Campanhas
+  $menuItems[] = ["name" => "Campanhas", "path" => "campanhas", "icon" => $url_base . "/master/icon/notificacoes.png", "activeOn" => ["campanhas", "nova_campanha", "monitor_campanha", "contatos_campanha", "relatorio_campanha"]];
+  
   $menuItems[] = ["name" => "Planos", "path" => "planos", "icon" =>  $url_base . "/master/icon/planos.png", "activeOn" => ["planos", "cad_planos", "edit_planos"]];
   $menuItems[] = ["name" => "Meu Perfil", "path" => "perfil", "icon" => $url_base . "/master/icon/profile.png", "activeOn" => ["perfil"]];
   $menuItems[] = ["name" => "Configurações", "path" => "configuracoes", "icon" => $url_base . "/master/icon/configurar.png", "activeOn" => ["configuracoes"]];

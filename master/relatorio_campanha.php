@@ -5,7 +5,7 @@ require_once "menu.php";
 // Buscar campanhas concluídas
 $campanhas = $connect->query("
     SELECT * FROM campanhas 
-    WHERE id_usuario = '$cod_id' 
+    WHERE id_usuario = ? 
     ORDER BY finalizado_em DESC, criado_em DESC
 ");
 
@@ -17,7 +17,7 @@ $statsGeral = $connect->query("
         SUM(enviados) as total_enviados,
         SUM(falhas) as total_falhas
     FROM campanhas 
-    WHERE id_usuario = '$cod_id' AND status != 'cancelada'
+    WHERE id_usuario = ? AND status != 'cancelada'
 ")->fetch(PDO::FETCH_OBJ);
 ?>
 

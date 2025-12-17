@@ -2,27 +2,32 @@
 require_once "topo.php";
 require_once "menu.php";
 
-// Verificar limite de campanhas (máximo 3)
-$countCampanhas = $connect->query("SELECT COUNT(*) FROM campanhas WHERE id_usuario = '$cod_id' AND status != 'cancelada'")->fetchColumn();
+// Verificar limite de campanhas (máximo 3) - usando prepared statement
+$stmtCount = $connect->prepare("SELECT COUNT(*) FROM campanhas WHERE id_usuario = ? AND status != 'cancelada'");
+$stmtCount->execute([$cod_id]);
+$countCampanhas = $stmtCount->fetchColumn();
 
 // Buscar estatísticas
-$statsQuery = $connect->query("
+$stmtStats = $connect->prepare("
     SELECT 
         SUM(CASE WHEN status = 'em_andamento' THEN 1 ELSE 0 END) as executando,
         SUM(CASE WHEN status = 'agendada' THEN 1 ELSE 0 END) as aguardando,
         SUM(CASE WHEN status = 'concluida' THEN 1 ELSE 0 END) as concluidas,
         SUM(total_contatos) as total_destinatarios
     FROM campanhas 
-    WHERE id_usuario = '$cod_id' AND status != 'cancelada'
+    WHERE id_usuario = ? AND status != 'cancelada'
 ");
-$stats = $statsQuery->fetch(PDO::FETCH_OBJ);
+$stmtStats->execute([$cod_id]);
+$stats = $stmtStats->fetch(PDO::FETCH_OBJ);
 
 // Buscar campanhas
-$campanhas = $connect->query("
+$stmtCampanhas = $connect->prepare("
     SELECT * FROM campanhas 
-    WHERE id_usuario = '$cod_id' AND status != 'cancelada'
+    WHERE id_usuario = ? AND status != 'cancelada'
     ORDER BY criado_em DESC
 ");
+$stmtCampanhas->execute([$cod_id]);
+$campanhas = $stmtCampanhas;
 ?>
 
 <style>
@@ -691,14 +696,16 @@ $campanhas = $connect->query("
                 <div class="sidebar-card">
                     <h3>Próximo disparo</h3>
                     <?php
-                    $proximoDisparo = $connect->query("
+                    $stmtProximo = $connect->prepare("
                         SELECT * FROM campanhas 
-                        WHERE id_usuario = '$cod_id' 
+                        WHERE id_usuario = ? 
                         AND status = 'agendada' 
                         AND data_agendamento > NOW()
                         ORDER BY data_agendamento ASC 
                         LIMIT 1
-                    ")->fetch(PDO::FETCH_OBJ);
+                    ");
+                    $stmtProximo->execute([$cod_id]);
+                    $proximoDisparo = $stmtProximo->fetch(PDO::FETCH_OBJ);
                     ?>
                     <?php if ($proximoDisparo): ?>
                     <div style="background: #2d2d3a; padding: 15px; border-radius: 10px; margin-bottom: 15px;">

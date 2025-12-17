@@ -21,7 +21,7 @@ if ($campanha_id > 0) {
 // Buscar campanhas em andamento se nenhum ID específico
 $campanhasAtivas = [];
 if (!$campanha_id) {
-    $campanhasAtivas = $connect->query("SELECT * FROM campanhas WHERE id_usuario = '$cod_id' AND status IN ('em_andamento', 'agendada') ORDER BY data_agendamento ASC")->fetchAll(PDO::FETCH_OBJ);
+    $campanhasAtivas = $connect->query("SELECT * FROM campanhas WHERE id_usuario = ? AND status IN ('em_andamento', 'agendada') ORDER BY data_agendamento ASC")->fetchAll(PDO::FETCH_OBJ);
 }
 ?>
 

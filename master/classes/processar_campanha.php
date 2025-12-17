@@ -65,10 +65,12 @@ function processarCampanha($connect, $campanha, $urlapi) {
     }
     
     // Verificar delay desde último envio
-    $ultimoEnvio = $connect->query("
+    $stmtUltimo = $connect->prepare("
         SELECT MAX(enviado_em) as ultimo FROM campanha_contatos 
-        WHERE campanha_id = {$campanha->id} AND status_envio IN ('enviado', 'entregue', 'falha')
-    ")->fetch(PDO::FETCH_OBJ);
+        WHERE campanha_id = ? AND status_envio IN ('enviado', 'entregue', 'falha')
+    ");
+    $stmtUltimo->execute([$campanha->id]);
+    $ultimoEnvio = $stmtUltimo->fetch(PDO::FETCH_OBJ);
     
     if ($ultimoEnvio && $ultimoEnvio->ultimo) {
         $ultimoTimestamp = strtotime($ultimoEnvio->ultimo);
@@ -133,7 +135,9 @@ function enviarMensagem($urlapi, $apikey, $instanceName, $telefone, $mensagem, $
         
         // Se há mídia, usar endpoint apropriado
         if ($campanha->arquivo_media && $campanha->tipo_mensagem != 'texto') {
-            $mediaUrl = 'https://' . $_SERVER['HTTP_HOST'] . $campanha->arquivo_media;
+            // Use configured base URL from functions.php or environment
+            $baseUrl = defined('APP_URL') ? APP_URL : 'https://whatsapp.painelcontrole.xyz';
+            $mediaUrl = $baseUrl . $campanha->arquivo_media;
             
             switch ($campanha->tipo_mensagem) {
                 case 'imagem':

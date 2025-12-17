@@ -79,7 +79,9 @@ function salvarCampanha($connect, $cod_id, $acao) {
         
         // Verificar limite de campanhas (se for nova)
         if ($acao === 'criar') {
-            $count = $connect->query("SELECT COUNT(*) FROM campanhas WHERE id_usuario = '$cod_id' AND status != 'cancelada'")->fetchColumn();
+            $stmtCount = $connect->prepare("SELECT COUNT(*) FROM campanhas WHERE id_usuario = ? AND status != 'cancelada'");
+            $stmtCount->execute([$cod_id]);
+            $count = $stmtCount->fetchColumn();
             if ($count >= 3) {
                 echo json_encode(['success' => false, 'message' => 'Limite de 3 campanhas atingido']);
                 return;

@@ -3,7 +3,7 @@ require_once "topo.php";
 require_once "menu.php";
 
 // Verificar limite de campanhas
-$countCampanhas = $connect->query("SELECT COUNT(*) FROM campanhas WHERE id_usuario = '$cod_id' AND status != 'cancelada'")->fetchColumn();
+$countCampanhas = $connect->query("SELECT COUNT(*) FROM campanhas WHERE id_usuario = ? AND status != 'cancelada'")->fetchColumn();
 
 // Verificar se é edição
 $campanha_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -29,10 +29,10 @@ if ($campanha_id > 0) {
 }
 
 // Buscar contatos do usuário
-$contatos = $connect->query("SELECT * FROM contatos_whatsapp WHERE id_usuario = '$cod_id' ORDER BY nome ASC");
+$contatos = $connect->query("SELECT * FROM contatos_whatsapp WHERE id_usuario = ? ORDER BY nome ASC");
 
 // Buscar clientes cadastrados
-$clientes = $connect->query("SELECT * FROM clientes WHERE idm = '$cod_id' ORDER BY nome ASC");
+$clientes = $connect->query("SELECT * FROM clientes WHERE idm = ? ORDER BY nome ASC");
 ?>
 
 <style>
@@ -897,7 +897,7 @@ $clientes = $connect->query("SELECT * FROM clientes WHERE idm = '$cod_id' ORDER 
                             <select id="filterCategoria">
                                 <option value="">Todas as Categorias</option>
                                 <?php
-                                $categorias = $connect->query("SELECT * FROM categoria WHERE idu = '$cod_id' ORDER BY nome");
+                                $categorias = $connect->query("SELECT * FROM categoria WHERE idu = ? ORDER BY nome");
                                 while ($cat = $categorias->fetch(PDO::FETCH_OBJ)) {
                                     echo "<option value='{$cat->id}'>{$cat->nome}</option>";
                                 }
@@ -947,13 +947,13 @@ $clientes = $connect->query("SELECT * FROM clientes WHERE idm = '$cod_id' ORDER 
                         $allContacts = [];
                         
                         // Contatos WhatsApp
-                        $contatosWA = $connect->query("SELECT *, 'whatsapp' as tipo FROM contatos_whatsapp WHERE id_usuario = '$cod_id'");
+                        $contatosWA = $connect->query("SELECT *, 'whatsapp' as tipo FROM contatos_whatsapp WHERE id_usuario = ?");
                         while ($c = $contatosWA->fetch(PDO::FETCH_OBJ)) {
                             $allContacts[] = $c;
                         }
                         
                         // Clientes
-                        $clientesDB = $connect->query("SELECT Id as id, nome, celular as telefone, 'cliente' as tipo, idc FROM clientes WHERE idm = '$cod_id'");
+                        $clientesDB = $connect->query("SELECT Id as id, nome, celular as telefone, 'cliente' as tipo, idc FROM clientes WHERE idm = ?");
                         while ($c = $clientesDB->fetch(PDO::FETCH_OBJ)) {
                             $allContacts[] = $c;
                         }
@@ -1119,7 +1119,7 @@ $clientes = $connect->query("SELECT * FROM clientes WHERE idm = '$cod_id' ORDER 
                     <div class="instances-grid" id="instancesGrid">
                         <!-- Instância padrão baseada na conexão do usuário -->
                         <?php
-                        $conexao = $connect->query("SELECT * FROM conexoes WHERE id_usuario = '$cod_id' AND conn = 1")->fetch(PDO::FETCH_OBJ);
+                        $conexao = $connect->query("SELECT * FROM conexoes WHERE id_usuario = ? AND conn = 1")->fetch(PDO::FETCH_OBJ);
                         if ($conexao):
                         ?>
                         <div class="instance-card selected" data-id="<?= $dadosgerais->tokenapi ?>" onclick="selectInstance(this)">
