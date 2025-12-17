@@ -1144,6 +1144,133 @@ ALTER TABLE `pagamentofun`
 ALTER TABLE `videos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
+-- --------------------------------------------------------
+--
+-- Estrutura para tabela `campanhas` - Campanhas de Marketing WhatsApp
+--
+CREATE TABLE IF NOT EXISTS `campanhas` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_usuario` int(11) NOT NULL COMMENT 'ID do usuário SAAS dono da campanha',
+  `nome` varchar(255) NOT NULL COMMENT 'Nome da campanha',
+  `mensagem` text DEFAULT NULL COMMENT 'Texto da mensagem',
+  `tipo_mensagem` enum('texto','imagem','video','documento','audio') DEFAULT 'texto',
+  `arquivo_media` varchar(500) DEFAULT NULL COMMENT 'Caminho do arquivo de mídia',
+  `arquivo_nome` varchar(255) DEFAULT NULL COMMENT 'Nome original do arquivo',
+  `instancia_id` varchar(100) DEFAULT NULL COMMENT 'ID da instância Evolution API selecionada',
+  `instancia_nome` varchar(255) DEFAULT NULL COMMENT 'Nome da instância',
+  `modo_envio` enum('unica','balanceado') DEFAULT 'unica' COMMENT 'Modo de envio: única instância ou balanceado',
+  `delay_segundos` int(11) DEFAULT 60 COMMENT 'Intervalo entre envios em segundos (mínimo 60)',
+  `data_agendamento` datetime DEFAULT NULL COMMENT 'Data e hora para início do disparo',
+  `status` enum('rascunho','agendada','em_andamento','pausada','concluida','cancelada') DEFAULT 'rascunho',
+  `total_contatos` int(11) DEFAULT 0,
+  `enviados` int(11) DEFAULT 0,
+  `entregues` int(11) DEFAULT 0,
+  `falhas` int(11) DEFAULT 0,
+  `criado_em` timestamp NOT NULL DEFAULT current_timestamp(),
+  `atualizado_em` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `iniciado_em` datetime DEFAULT NULL,
+  `finalizado_em` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_usuario` (`id_usuario`),
+  KEY `idx_status` (`status`),
+  KEY `idx_agendamento` (`data_agendamento`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+--
+-- Estrutura para tabela `campanha_contatos` - Contatos selecionados para cada campanha
+--
+CREATE TABLE IF NOT EXISTS `campanha_contatos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `campanha_id` int(11) NOT NULL,
+  `contato_id` int(11) DEFAULT NULL COMMENT 'Referência ao contato salvo',
+  `telefone` varchar(20) NOT NULL,
+  `nome` varchar(255) DEFAULT NULL,
+  `status_envio` enum('pendente','enviando','enviado','entregue','lido','falha') DEFAULT 'pendente',
+  `mensagem_erro` varchar(500) DEFAULT NULL,
+  `enviado_em` datetime DEFAULT NULL,
+  `entregue_em` datetime DEFAULT NULL,
+  `lido_em` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_campanha` (`campanha_id`),
+  KEY `idx_status` (`status_envio`),
+  KEY `idx_telefone` (`telefone`),
+  UNIQUE KEY `unique_campanha_telefone` (`campanha_id`, `telefone`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+--
+-- Estrutura para tabela `contatos_whatsapp` - Contatos capturados via API Evolution
+--
+CREATE TABLE IF NOT EXISTS `contatos_whatsapp` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_usuario` int(11) NOT NULL COMMENT 'ID do usuário SAAS dono do contato',
+  `telefone` varchar(20) NOT NULL,
+  `nome` varchar(255) DEFAULT NULL,
+  `nome_push` varchar(255) DEFAULT NULL COMMENT 'Nome de exibição do WhatsApp',
+  `foto_url` varchar(500) DEFAULT NULL,
+  `origem` enum('salvo','conversa','manual') DEFAULT 'manual' COMMENT 'Origem: salvo no WhatsApp, conversa trocada, ou manual',
+  `ultima_mensagem` datetime DEFAULT NULL,
+  `criado_em` timestamp NOT NULL DEFAULT current_timestamp(),
+  `atualizado_em` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_usuario_telefone` (`id_usuario`, `telefone`),
+  KEY `idx_usuario` (`id_usuario`),
+  KEY `idx_origem` (`origem`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+--
+-- Estrutura para tabela `campanha_logs` - Log de eventos de cada campanha
+--
+CREATE TABLE IF NOT EXISTS `campanha_logs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `campanha_id` int(11) NOT NULL,
+  `tipo` enum('info','sucesso','erro','aviso') DEFAULT 'info',
+  `mensagem` text NOT NULL,
+  `dados` json DEFAULT NULL,
+  `criado_em` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `idx_campanha` (`campanha_id`),
+  KEY `idx_tipo` (`tipo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+--
+-- Estrutura para tabela `instancias_evolution` - Cache das instâncias do Evolution API
+--
+CREATE TABLE IF NOT EXISTS `instancias_evolution` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_usuario` int(11) NOT NULL,
+  `instance_name` varchar(255) NOT NULL,
+  `instance_id` varchar(100) DEFAULT NULL,
+  `status` enum('open','close','connecting') DEFAULT 'close',
+  `numero` varchar(20) DEFAULT NULL,
+  `atualizado_em` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_usuario_instance` (`id_usuario`, `instance_name`),
+  KEY `idx_usuario` (`id_usuario`),
+  KEY `idx_status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- AUTO_INCREMENT para as novas tabelas
+--
+ALTER TABLE `campanhas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `campanha_contatos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `contatos_whatsapp`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `campanha_logs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `instancias_evolution`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 DELIMITER $$
 --
 -- Eventos
