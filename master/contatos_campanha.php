@@ -3,14 +3,30 @@ require_once "topo.php";
 require_once "menu.php";
 
 // Buscar contatos do usuário
-$contatosWhatsApp = $connect->query("SELECT * FROM contatos_whatsapp WHERE id_usuario = ? AND origem IN ('conversa', 'salvo') ORDER BY origem, nome ASC");
-$contatosManuais = $connect->query("SELECT * FROM contatos_whatsapp WHERE id_usuario = ? AND origem = 'manual' ORDER BY nome ASC");
+$stmtWA = $connect->prepare("SELECT * FROM contatos_whatsapp WHERE id_usuario = ? AND origem IN ('conversa', 'salvo') ORDER BY origem, nome ASC");
+$stmtWA->execute([$cod_id]);
+$contatosWhatsApp = $stmtWA;
+
+$stmtManuais = $connect->prepare("SELECT * FROM contatos_whatsapp WHERE id_usuario = ? AND origem = 'manual' ORDER BY nome ASC");
+$stmtManuais->execute([$cod_id]);
+$contatosManuais = $stmtManuais;
 
 // Contar totais
-$totalWA = $connect->query("SELECT COUNT(*) FROM contatos_whatsapp WHERE id_usuario = ? AND origem IN ('conversa', 'salvo')")->fetchColumn();
-$totalManuais = $connect->query("SELECT COUNT(*) FROM contatos_whatsapp WHERE id_usuario = ? AND origem = 'manual'")->fetchColumn();
-$totalSalvos = $connect->query("SELECT COUNT(*) FROM contatos_whatsapp WHERE id_usuario = ? AND origem = 'salvo'")->fetchColumn();
-$totalConversas = $connect->query("SELECT COUNT(*) FROM contatos_whatsapp WHERE id_usuario = ? AND origem = 'conversa'")->fetchColumn();
+$stmtTotalWA = $connect->prepare("SELECT COUNT(*) FROM contatos_whatsapp WHERE id_usuario = ? AND origem IN ('conversa', 'salvo')");
+$stmtTotalWA->execute([$cod_id]);
+$totalWA = $stmtTotalWA->fetchColumn();
+
+$stmtTotalManuais = $connect->prepare("SELECT COUNT(*) FROM contatos_whatsapp WHERE id_usuario = ? AND origem = 'manual'");
+$stmtTotalManuais->execute([$cod_id]);
+$totalManuais = $stmtTotalManuais->fetchColumn();
+
+$stmtTotalSalvos = $connect->prepare("SELECT COUNT(*) FROM contatos_whatsapp WHERE id_usuario = ? AND origem = 'salvo'");
+$stmtTotalSalvos->execute([$cod_id]);
+$totalSalvos = $stmtTotalSalvos->fetchColumn();
+
+$stmtTotalConversas = $connect->prepare("SELECT COUNT(*) FROM contatos_whatsapp WHERE id_usuario = ? AND origem = 'conversa'");
+$stmtTotalConversas->execute([$cod_id]);
+$totalConversas = $stmtTotalConversas->fetchColumn();
 ?>
 
 <style>
@@ -318,9 +334,10 @@ $totalConversas = $connect->query("SELECT COUNT(*) FROM contatos_whatsapp WHERE 
             <div class="tab-content active" id="tab-todos">
                 <div class="contatos-list">
                     <?php 
-                    $allContatos = $connect->query("SELECT * FROM contatos_whatsapp WHERE id_usuario = ? ORDER BY origem, nome ASC");
+                    $stmtAll = $connect->prepare("SELECT * FROM contatos_whatsapp WHERE id_usuario = ? ORDER BY origem, nome ASC");
+                    $stmtAll->execute([$cod_id]);
                     $hasContatos = false;
-                    while ($contato = $allContatos->fetch(PDO::FETCH_OBJ)): 
+                    while ($contato = $stmtAll->fetch(PDO::FETCH_OBJ)): 
                         $hasContatos = true;
                     ?>
                     <div class="contato-item" data-id="<?= $contato->id ?>" data-nome="<?= htmlspecialchars($contato->nome ?? '') ?>" data-telefone="<?= $contato->telefone ?>">
@@ -365,8 +382,9 @@ $totalConversas = $connect->query("SELECT COUNT(*) FROM contatos_whatsapp WHERE 
             <div class="tab-content" id="tab-whatsapp">
                 <div class="contatos-list">
                     <?php 
-                    $contatosWA = $connect->query("SELECT * FROM contatos_whatsapp WHERE id_usuario = ? AND origem IN ('salvo', 'conversa') ORDER BY origem, nome ASC");
-                    while ($contato = $contatosWA->fetch(PDO::FETCH_OBJ)): 
+                    $stmtWATab = $connect->prepare("SELECT * FROM contatos_whatsapp WHERE id_usuario = ? AND origem IN ('salvo', 'conversa') ORDER BY origem, nome ASC");
+                    $stmtWATab->execute([$cod_id]);
+                    while ($contato = $stmtWATab->fetch(PDO::FETCH_OBJ)): 
                     ?>
                     <div class="contato-item" data-id="<?= $contato->id ?>">
                         <div class="contato-info">
@@ -388,9 +406,10 @@ $totalConversas = $connect->query("SELECT COUNT(*) FROM contatos_whatsapp WHERE 
             <div class="tab-content" id="tab-manuais">
                 <div class="contatos-list">
                     <?php 
-                    $contatosManuais = $connect->query("SELECT * FROM contatos_whatsapp WHERE id_usuario = ? AND origem = 'manual' ORDER BY nome ASC");
+                    $stmtManuaisTab = $connect->prepare("SELECT * FROM contatos_whatsapp WHERE id_usuario = ? AND origem = 'manual' ORDER BY nome ASC");
+                    $stmtManuaisTab->execute([$cod_id]);
                     $hasManuais = false;
-                    while ($contato = $contatosManuais->fetch(PDO::FETCH_OBJ)): 
+                    while ($contato = $stmtManuaisTab->fetch(PDO::FETCH_OBJ)): 
                         $hasManuais = true;
                     ?>
                     <div class="contato-item" data-id="<?= $contato->id ?>">

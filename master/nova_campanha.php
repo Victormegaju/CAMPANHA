@@ -3,7 +3,9 @@ require_once "topo.php";
 require_once "menu.php";
 
 // Verificar limite de campanhas
-$countCampanhas = $connect->query("SELECT COUNT(*) FROM campanhas WHERE id_usuario = ? AND status != 'cancelada'")->fetchColumn();
+$stmtCount = $connect->prepare("SELECT COUNT(*) FROM campanhas WHERE id_usuario = ? AND status != 'cancelada'");
+$stmtCount->execute([$cod_id]);
+$countCampanhas = $stmtCount->fetchColumn();
 
 // Verificar se é edição
 $campanha_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -29,10 +31,14 @@ if ($campanha_id > 0) {
 }
 
 // Buscar contatos do usuário
-$contatos = $connect->query("SELECT * FROM contatos_whatsapp WHERE id_usuario = ? ORDER BY nome ASC");
+$stmtContatos = $connect->prepare("SELECT * FROM contatos_whatsapp WHERE id_usuario = ? ORDER BY nome ASC");
+$stmtContatos->execute([$cod_id]);
+$contatos = $stmtContatos;
 
 // Buscar clientes cadastrados
-$clientes = $connect->query("SELECT * FROM clientes WHERE idm = ? ORDER BY nome ASC");
+$stmtClientes = $connect->prepare("SELECT * FROM clientes WHERE idm = ? ORDER BY nome ASC");
+$stmtClientes->execute([$cod_id]);
+$clientes = $stmtClientes;
 ?>
 
 <style>
@@ -897,8 +903,9 @@ $clientes = $connect->query("SELECT * FROM clientes WHERE idm = ? ORDER BY nome 
                             <select id="filterCategoria">
                                 <option value="">Todas as Categorias</option>
                                 <?php
-                                $categorias = $connect->query("SELECT * FROM categoria WHERE idu = ? ORDER BY nome");
-                                while ($cat = $categorias->fetch(PDO::FETCH_OBJ)) {
+                                $stmtCat = $connect->prepare("SELECT * FROM categoria WHERE idu = ? ORDER BY nome");
+                                $stmtCat->execute([$cod_id]);
+                                while ($cat = $stmtCat->fetch(PDO::FETCH_OBJ)) {
                                     echo "<option value='{$cat->id}'>{$cat->nome}</option>";
                                 }
                                 ?>
@@ -947,14 +954,16 @@ $clientes = $connect->query("SELECT * FROM clientes WHERE idm = ? ORDER BY nome 
                         $allContacts = [];
                         
                         // Contatos WhatsApp
-                        $contatosWA = $connect->query("SELECT *, 'whatsapp' as tipo FROM contatos_whatsapp WHERE id_usuario = ?");
-                        while ($c = $contatosWA->fetch(PDO::FETCH_OBJ)) {
+                        $stmtContatosWA = $connect->prepare("SELECT *, 'whatsapp' as tipo FROM contatos_whatsapp WHERE id_usuario = ?");
+                        $stmtContatosWA->execute([$cod_id]);
+                        while ($c = $stmtContatosWA->fetch(PDO::FETCH_OBJ)) {
                             $allContacts[] = $c;
                         }
                         
                         // Clientes
-                        $clientesDB = $connect->query("SELECT Id as id, nome, celular as telefone, 'cliente' as tipo, idc FROM clientes WHERE idm = ?");
-                        while ($c = $clientesDB->fetch(PDO::FETCH_OBJ)) {
+                        $stmtClientesDB = $connect->prepare("SELECT Id as id, nome, celular as telefone, 'cliente' as tipo, idc FROM clientes WHERE idm = ?");
+                        $stmtClientesDB->execute([$cod_id]);
+                        while ($c = $stmtClientesDB->fetch(PDO::FETCH_OBJ)) {
                             $allContacts[] = $c;
                         }
                         
@@ -1119,7 +1128,9 @@ $clientes = $connect->query("SELECT * FROM clientes WHERE idm = ? ORDER BY nome 
                     <div class="instances-grid" id="instancesGrid">
                         <!-- Instância padrão baseada na conexão do usuário -->
                         <?php
-                        $conexao = $connect->query("SELECT * FROM conexoes WHERE id_usuario = ? AND conn = 1")->fetch(PDO::FETCH_OBJ);
+                        $stmtConexao = $connect->prepare("SELECT * FROM conexoes WHERE id_usuario = ? AND conn = 1");
+                        $stmtConexao->execute([$cod_id]);
+                        $conexao = $stmtConexao->fetch(PDO::FETCH_OBJ);
                         if ($conexao):
                         ?>
                         <div class="instance-card selected" data-id="<?= $dadosgerais->tokenapi ?>" onclick="selectInstance(this)">

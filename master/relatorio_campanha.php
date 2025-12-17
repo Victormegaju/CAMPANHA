@@ -3,14 +3,16 @@ require_once "topo.php";
 require_once "menu.php";
 
 // Buscar campanhas concluídas
-$campanhas = $connect->query("
+$stmtCampanhas = $connect->prepare("
     SELECT * FROM campanhas 
     WHERE id_usuario = ? 
     ORDER BY finalizado_em DESC, criado_em DESC
 ");
+$stmtCampanhas->execute([$cod_id]);
+$campanhas = $stmtCampanhas;
 
 // Estatísticas gerais
-$statsGeral = $connect->query("
+$stmtStats = $connect->prepare("
     SELECT 
         COUNT(*) as total_campanhas,
         SUM(total_contatos) as total_destinatarios,
@@ -18,7 +20,9 @@ $statsGeral = $connect->query("
         SUM(falhas) as total_falhas
     FROM campanhas 
     WHERE id_usuario = ? AND status != 'cancelada'
-")->fetch(PDO::FETCH_OBJ);
+");
+$stmtStats->execute([$cod_id]);
+$statsGeral = $stmtStats->fetch(PDO::FETCH_OBJ);
 ?>
 
 <style>
