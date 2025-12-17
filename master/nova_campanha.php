@@ -1,6 +1,51 @@
 <?php
 require_once "topo.php";
 require_once "menu.php";
+require_once "classes/functions.php";
+
+// ===== VERIFICAÇÃO AUTOMÁTICA DE CONEXÃO COM EVOLUTION API =====
+$idins = $dadosgerais->tokenapi;
+$stmtConn = $connect->prepare("SELECT apikey, conn FROM conexoes WHERE id_usuario = ?");
+$stmtConn->execute([$cod_id]);
+$connData = $stmtConn->fetch(PDO::FETCH_OBJ);
+
+$conexaoAtiva = false;
+if ($connData && $connData->apikey) {
+    $curl = curl_init();
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => $urlapi . '/instance/connectionState/AbC123' . $idins,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT => 5,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'GET',
+        CURLOPT_HTTPHEADER => array('apikey: ' . $connData->apikey),
+    ));
+    $response = curl_exec($curl);
+    curl_close($curl);
+    
+    $res = json_decode($response, true);
+    $conexaoo = "";
+    if (isset($res['instance']['state'])) {
+        $conexaoo = $res['instance']['state'];
+    } elseif (isset($res['state'])) {
+        $conexaoo = $res['state'];
+    }
+    
+    if ($conexaoo == 'open') {
+        $conexaoAtiva = true;
+        if ($connData->conn != 1) {
+            $connect->prepare("UPDATE conexoes SET conn = 1 WHERE id_usuario = ?")->execute([$cod_id]);
+        }
+    } else {
+        if ($connData->conn == 1) {
+            $connect->prepare("UPDATE conexoes SET conn = 0 WHERE id_usuario = ?")->execute([$cod_id]);
+        }
+    }
+} elseif ($connData && $connData->conn == 1) {
+    $conexaoAtiva = true;
+}
+// ===== FIM DA VERIFICAÇÃO =====
 
 // Verificar limite de campanhas
 $stmtCount = $connect->prepare("SELECT COUNT(*) FROM campanhas WHERE id_usuario = ? AND status != 'cancelada'");

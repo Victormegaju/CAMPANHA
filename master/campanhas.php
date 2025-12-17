@@ -1,6 +1,56 @@
 <?php
 require_once "topo.php";
 require_once "menu.php";
+require_once "classes/functions.php";
+
+// ===== VERIFICAÇÃO AUTOMÁTICA DE CONEXÃO COM EVOLUTION API =====
+// Isso sincroniza o status da conexão para todos os usuários automaticamente
+$idins = $dadosgerais->tokenapi;
+$stmtConn = $connect->prepare("SELECT apikey, conn FROM conexoes WHERE id_usuario = ?");
+$stmtConn->execute([$cod_id]);
+$connData = $stmtConn->fetch(PDO::FETCH_OBJ);
+
+$conexaoAtiva = false;
+if ($connData && $connData->apikey) {
+    $curl = curl_init();
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => $urlapi . '/instance/connectionState/AbC123' . $idins,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT => 5,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'GET',
+        CURLOPT_HTTPHEADER => array('apikey: ' . $connData->apikey),
+    ));
+    $response = curl_exec($curl);
+    curl_close($curl);
+    
+    $res = json_decode($response, true);
+    $conexaoo = "";
+    if (isset($res['instance']['state'])) {
+        $conexaoo = $res['instance']['state'];
+    } elseif (isset($res['state'])) {
+        $conexaoo = $res['state'];
+    }
+    
+    if ($conexaoo == 'open') {
+        $conexaoAtiva = true;
+        // Atualizar banco se estava desconectado
+        if ($connData->conn != 1) {
+            $connect->prepare("UPDATE conexoes SET conn = 1 WHERE id_usuario = ?")->execute([$cod_id]);
+        }
+    } else {
+        // Se API diz desconectado, atualizar banco
+        if ($connData->conn == 1) {
+            $connect->prepare("UPDATE conexoes SET conn = 0 WHERE id_usuario = ?")->execute([$cod_id]);
+        }
+    }
+} elseif ($connData && $connData->conn == 1) {
+    // Tem registro mas sem apikey - verificar se realmente está conectado
+    $conexaoAtiva = true;
+}
+
+// ===== FIM DA VERIFICAÇÃO =====
 
 // Verificar limite de campanhas (máximo 3) - usando prepared statement
 $stmtCount = $connect->prepare("SELECT COUNT(*) FROM campanhas WHERE id_usuario = ? AND status != 'cancelada'");
