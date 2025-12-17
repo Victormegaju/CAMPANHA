@@ -370,8 +370,10 @@ function statusCampanha($connect, $cod_id) {
 }
 
 function importarContatosWhatsApp($connect, $cod_id) {
+    global $urlapi, $apikey;
+    
     try {
-        // Buscar dados da API Evolution
+        // Buscar dados do usuário e conexão ativa
         $stmt = $connect->prepare("SELECT tokenapi FROM carteira WHERE Id = ?");
         $stmt->execute([$cod_id]);
         $user = $stmt->fetch(PDO::FETCH_OBJ);
@@ -381,10 +383,19 @@ function importarContatosWhatsApp($connect, $cod_id) {
             return;
         }
         
-        // URL da API Evolution (buscar do functions.php ou config)
-        $urlapi = "http://whatsapp.painelcontrole.xyz:8080";
-        $apikey = $user->tokenapi;
-        $instanceName = 'AbC123' . $apikey;
+        // Verificar se há conexão ativa
+        $stmtConn = $connect->prepare("SELECT apikey, conn FROM conexoes WHERE id_usuario = ? LIMIT 1");
+        $stmtConn->execute([$cod_id]);
+        $conn = $stmtConn->fetch(PDO::FETCH_OBJ);
+        
+        if (!$conn || $conn->conn != 1) {
+            echo json_encode(['success' => false, 'message' => 'WhatsApp não está conectado. Acesse a página QR Code primeiro.']);
+            return;
+        }
+        
+        // Usar apikey da conexão se disponível, senão usar global
+        $key_to_use = $conn->apikey ?: $apikey;
+        $instanceName = 'AbC123' . $user->tokenapi;
         
         // Buscar chats/contatos da API Evolution
         $curl = curl_init();
@@ -392,7 +403,7 @@ function importarContatosWhatsApp($connect, $cod_id) {
             CURLOPT_URL => $urlapi . '/chat/findChats/' . $instanceName,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTPHEADER => ['apikey: ' . $apikey],
+            CURLOPT_HTTPHEADER => ['apikey: ' . $key_to_use],
         ]);
         
         $response = curl_exec($curl);

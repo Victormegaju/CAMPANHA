@@ -228,6 +228,30 @@ if (!$campanha_id) {
     }
     
     .btn-monitor:hover { background: #00d4aa; color: #fff; text-decoration: none; }
+    
+    /* Theme Support - Light Mode */
+    body:not(.dark-mode) .monitor-container,
+    body:not(.dark-mode) .progress-card,
+    body:not(.dark-mode) .stats-card,
+    body:not(.dark-mode) .log-container,
+    body:not(.dark-mode) .campaign-list-item {
+        background: #fff !important;
+        border-color: #e0e0e0 !important;
+    }
+    
+    body:not(.dark-mode) .page-title h1,
+    body:not(.dark-mode) .campaign-name,
+    body:not(.dark-mode) .log-container h3,
+    body:not(.dark-mode) .campaign-list-item .info h4 {
+        color: #333 !important;
+    }
+    
+    body:not(.dark-mode) .page-title p,
+    body:not(.dark-mode) .campaign-status,
+    body:not(.dark-mode) .log-item,
+    body:not(.dark-mode) .campaign-list-item .info span {
+        color: #666 !important;
+    }
 </style>
 
 <div class="slim-mainpanel">

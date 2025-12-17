@@ -47,32 +47,30 @@ if ($connData && $connData->apikey) {
 }
 // ===== FIM DA VERIFICAÇÃO =====
 
-// Verificar limite de campanhas
-$stmtCount = $connect->prepare("SELECT COUNT(*) FROM campanhas WHERE id_usuario = ? AND status != 'cancelada'");
-$stmtCount->execute([$cod_id]);
-$countCampanhas = $stmtCount->fetchColumn();
-
-// Verificar se é edição
+// Verificar se foi passado um ID
 $campanha_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-$campanha = null;
-$contatosSelecionados = [];
 
-if ($campanha_id > 0) {
-    $stmt = $connect->prepare("SELECT * FROM campanhas WHERE id = ? AND id_usuario = ?");
-    $stmt->execute([$campanha_id, $cod_id]);
-    $campanha = $stmt->fetch(PDO::FETCH_OBJ);
-    
-    if ($campanha) {
-        // Buscar contatos já selecionados
-        $stmtContatos = $connect->prepare("SELECT telefone FROM campanha_contatos WHERE campanha_id = ?");
-        $stmtContatos->execute([$campanha_id]);
-        while ($row = $stmtContatos->fetch(PDO::FETCH_ASSOC)) {
-            $contatosSelecionados[] = $row['telefone'];
-        }
-    }
-} elseif ($countCampanhas >= 3) {
-    header('Location: campanhas?erro=Limite de 3 campanhas atingido');
+if ($campanha_id <= 0) {
+    header('Location: campanhas?erro=ID da campanha não informado');
     exit;
+}
+
+// Buscar a campanha
+$stmt = $connect->prepare("SELECT * FROM campanhas WHERE id = ? AND id_usuario = ?");
+$stmt->execute([$campanha_id, $cod_id]);
+$campanha = $stmt->fetch(PDO::FETCH_OBJ);
+
+if (!$campanha) {
+    header('Location: campanhas?erro=Campanha não encontrada');
+    exit;
+}
+
+// Buscar contatos já selecionados
+$contatosSelecionados = [];
+$stmtContatosSel = $connect->prepare("SELECT telefone FROM campanha_contatos WHERE campanha_id = ?");
+$stmtContatosSel->execute([$campanha_id]);
+while ($row = $stmtContatosSel->fetch(PDO::FETCH_ASSOC)) {
+    $contatosSelecionados[] = $row['telefone'];
 }
 
 // Buscar contatos do usuário
@@ -921,11 +919,11 @@ $clientes = $stmtClientes;
         
         <!-- Breadcrumb -->
         <div class="breadcrumb-nav">
-            <i class="fas fa-plus-circle" style="color: #00a884;"></i>
-            <a href="campanhas">Campanhas</a> - <?= $campanha_id > 0 ? 'Editar Campanha' : 'Nova Campanha' ?>
+            <i class="far fa-edit" style="color: #f6ad55;"></i>
+            <a href="campanhas">Campanhas</a> - Editar Campanha
         </div>
         
-        <h1 class="page-title"><i class="fas fa-bullhorn" style="color: #00a884; margin-right: 10px;"></i><?= $campanha_id > 0 ? 'Editar Campanha WhatsApp' : 'Nova Campanha WhatsApp' ?></h1>
+        <h1 class="page-title"><i class="fas fa-edit" style="color: #f6ad55; margin-right: 10px;"></i>Editar Campanha WhatsApp</h1>
         
         <!-- Stepper -->
         <div class="wizard-stepper">
@@ -949,14 +947,14 @@ $clientes = $stmtClientes;
         
         <form id="formCampanha" enctype="multipart/form-data">
             <input type="hidden" name="campanha_id" value="<?= $campanha_id ?>">
-            <input type="hidden" name="acao" value="<?= $campanha_id ? 'atualizar' : 'criar' ?>">
+            <input type="hidden" name="acao" value="atualizar">
             
             <div class="wizard-content">
                 
                 <!-- Step 1: Selecionar Destinatários -->
                 <div class="wizard-step active" data-step="1">
                     <h3 class="section-title">
-                        <i class="fas fa-users"></i>
+                        <i class="fas fa-users" style="color: #00a884;"></i>
                         Selecionar Destinatários
                     </h3>
                     

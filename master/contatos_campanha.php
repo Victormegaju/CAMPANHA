@@ -273,6 +273,45 @@ $totalConversas = $stmtTotalConversas->fetchColumn();
     .empty-state i { font-size: 4rem; color: #3d3d4a; margin-bottom: 20px; }
     .empty-state h4 { color: #fff; margin-bottom: 10px; }
     .empty-state p { color: #8a8a8a; }
+    
+    /* Theme Support - Light Mode */
+    body:not(.dark-mode) .contatos-container,
+    body:not(.dark-mode) .stat-card,
+    body:not(.dark-mode) .contatos-section,
+    body:not(.dark-mode) .contato-item {
+        background: #fff;
+        border-color: #e0e0e0;
+    }
+    
+    body:not(.dark-mode) .page-title h1,
+    body:not(.dark-mode) .stat-label,
+    body:not(.dark-mode) .contato-details h4,
+    body:not(.dark-mode) .section-header h3,
+    body:not(.dark-mode) .modal-title {
+        color: #333 !important;
+    }
+    
+    body:not(.dark-mode) .page-title p,
+    body:not(.dark-mode) .contato-details span,
+    body:not(.dark-mode) .empty-state p {
+        color: #666 !important;
+    }
+    
+    body:not(.dark-mode) .search-box input,
+    body:not(.dark-mode) .form-group-dark input {
+        background: #f8f9fa;
+        border-color: #dee2e6;
+        color: #333;
+    }
+    
+    body:not(.dark-mode) .modal-content {
+        background: #fff !important;
+        border-color: #dee2e6 !important;
+    }
+    
+    body:not(.dark-mode) .contato-avatar {
+        background: linear-gradient(135deg, #00d4aa 0%, #00a884 100%);
+    }
 </style>
 
 <div class="slim-mainpanel">
@@ -503,6 +542,51 @@ $totalConversas = $stmtTotalConversas->fetchColumn();
     </div>
 </div>
 
+<!-- Modal Confirmação Importar -->
+<div class="modal fade modal-dark" id="modalImportar" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fab fa-whatsapp mr-2" style="color: #25D366;"></i>Importar Contatos</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body text-center py-4">
+                <i class="fab fa-whatsapp" style="font-size: 3rem; color: #25D366; margin-bottom: 15px;"></i>
+                <p style="color: #fff;">Isso irá importar/atualizar contatos do seu WhatsApp.<br>Deseja continuar?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" id="btnConfirmarImportar">
+                    <i class="fas fa-download mr-1"></i> Importar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Confirmação Excluir -->
+<div class="modal fade modal-dark" id="modalExcluirContato" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-exclamation-triangle mr-2" style="color: #dc3545;"></i>Confirmar Exclusão</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body text-center py-4">
+                <i class="fas fa-trash" style="font-size: 3rem; color: #dc3545; margin-bottom: 15px;"></i>
+                <p style="color: #fff;">Tem certeza que deseja excluir este contato?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="btnConfirmarExcluir">
+                    <i class="fas fa-trash mr-1"></i> Excluir
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="contatoIdExcluir" value="">
+
 <script src="../lib/jquery/js/jquery.js"></script>
 <script src="../lib/popper.js/js/popper.js"></script>
 <script src="../lib/bootstrap/js/bootstrap.js"></script>
@@ -527,7 +611,11 @@ $('#searchContato').on('keyup', function() {
 });
 
 function importarContatos() {
-    if (!confirm('Isso irá importar/atualizar contatos do seu WhatsApp. Continuar?')) return;
+    $('#modalImportar').modal('show');
+}
+
+$('#btnConfirmarImportar').on('click', function() {
+    $('#modalImportar').modal('hide');
     
     $.ajax({
         url: 'classes/campanhas_exe.php',
@@ -539,15 +627,15 @@ function importarContatos() {
         },
         success: function(resp) {
             $('#loading').remove();
-            alert(resp.message);
-            if (resp.success) location.reload();
+            showToast(resp.message, resp.success ? 'success' : 'error');
+            if (resp.success) setTimeout(() => location.reload(), 1500);
         },
         error: function() {
             $('#loading').remove();
-            alert('Erro ao importar contatos');
+            showToast('Erro ao importar contatos', 'error');
         }
     });
-}
+});
 
 $('#formNovoContato').on('submit', function(e) {
     e.preventDefault();
@@ -563,9 +651,11 @@ $('#formNovoContato').on('submit', function(e) {
         dataType: 'json',
         success: function(resp) {
             if (resp.success) {
-                location.reload();
+                $('#modalNovoContato').modal('hide');
+                showToast('Contato criado com sucesso', 'success');
+                setTimeout(() => location.reload(), 1500);
             } else {
-                alert(resp.message);
+                showToast(resp.message, 'error');
             }
         }
     });
@@ -593,16 +683,24 @@ $('#formEditarContato').on('submit', function(e) {
         dataType: 'json',
         success: function(resp) {
             if (resp.success) {
-                location.reload();
+                $('#modalEditarContato').modal('hide');
+                showToast('Contato atualizado com sucesso', 'success');
+                setTimeout(() => location.reload(), 1500);
             } else {
-                alert(resp.message);
+                showToast(resp.message, 'error');
             }
         }
     });
 });
 
 function excluirContato(id) {
-    if (!confirm('Excluir este contato?')) return;
+    $('#contatoIdExcluir').val(id);
+    $('#modalExcluirContato').modal('show');
+}
+
+$('#btnConfirmarExcluir').on('click', function() {
+    var id = $('#contatoIdExcluir').val();
+    $('#modalExcluirContato').modal('hide');
     
     $.ajax({
         url: 'classes/contatos_exe.php',
@@ -611,12 +709,43 @@ function excluirContato(id) {
         dataType: 'json',
         success: function(resp) {
             if (resp.success) {
-                location.reload();
+                showToast('Contato excluído com sucesso', 'success');
+                setTimeout(() => location.reload(), 1500);
             } else {
-                alert(resp.message);
+                showToast(resp.message, 'error');
             }
         }
     });
+});
+
+// Toast notification function
+function showToast(message, type) {
+    var bgColor = type === 'success' ? '#00a884' : '#dc3545';
+    var icon = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+    
+    var toast = $(`
+        <div class="toast-notification" style="
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: ${bgColor};
+            color: #fff;
+            padding: 15px 25px;
+            border-radius: 10px;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            animation: slideIn 0.3s ease;
+        ">
+            <i class="${icon}"></i>
+            <span>${message}</span>
+        </div>
+    `);
+    
+    $('body').append(toast);
+    setTimeout(() => toast.fadeOut(300, () => toast.remove()), 3000);
 }
 </script>
 

@@ -368,6 +368,39 @@ $campanhas = $stmtCampanhas;
         color: #fff;
     }
     
+    .btn-action.warning {
+        background: rgba(246, 173, 85, 0.15);
+        color: #f6ad55;
+    }
+    
+    .btn-action.warning:hover {
+        background: #f6ad55;
+        color: #fff;
+    }
+    
+    /* Theme Support */
+    body:not(.dark-mode) .campanhas-container,
+    body:not(.dark-mode) .stat-card,
+    body:not(.dark-mode) .campanhas-table,
+    body:not(.dark-mode) .sidebar-card {
+        background: #fff;
+        border-color: #e0e0e0;
+    }
+    
+    body:not(.dark-mode) .page-title h1,
+    body:not(.dark-mode) .stat-label,
+    body:not(.dark-mode) th,
+    body:not(.dark-mode) td,
+    body:not(.dark-mode) .sidebar-card h3 {
+        color: #333 !important;
+    }
+    
+    body:not(.dark-mode) .page-title p,
+    body:not(.dark-mode) .sidebar-card p,
+    body:not(.dark-mode) .empty-state p {
+        color: #666 !important;
+    }
+    
     /* Sidebar */
     .sidebar-content {
         display: flex;
@@ -712,7 +745,7 @@ $campanhas = $stmtCampanhas;
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         <?php elseif ($campanha->status == 'rascunho' || $campanha->status == 'agendada'): ?>
-                                        <a href="nova_campanha?id=<?= $campanha->id ?>" class="btn-action primary" title="Editar">
+                                        <a href="editar_campanha?id=<?= $campanha->id ?>" class="btn-action warning" title="Editar">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <?php endif; ?>

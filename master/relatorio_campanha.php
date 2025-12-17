@@ -134,6 +134,25 @@ $statsGeral = $stmtStats->fetch(PDO::FETCH_OBJ);
     }
     
     .btn-details:hover { background: rgba(0, 168, 132, 0.3); }
+    
+    /* Theme Support - Light Mode */
+    body:not(.dark-mode) .relatorio-container,
+    body:not(.dark-mode) .stat-card,
+    body:not(.dark-mode) .campanhas-table {
+        background: #fff !important;
+        border-color: #e0e0e0 !important;
+    }
+    
+    body:not(.dark-mode) .page-title h1,
+    body:not(.dark-mode) th,
+    body:not(.dark-mode) td {
+        color: #333 !important;
+    }
+    
+    body:not(.dark-mode) .page-title p,
+    body:not(.dark-mode) .label {
+        color: #666 !important;
+    }
 </style>
 
 <div class="slim-mainpanel">
