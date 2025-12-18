@@ -1,9 +1,11 @@
 <?php
 require_once "topo.php";
+require_once "config_evolution.php";
 
 // Evolution API Configuration
-$urlapi = "http://whatsapp.painelcontrole.xyz:8080";
-$apikey = $dadosgerais->tokenapi ?? "4FAf4CAnP4jKtbhp6guW1HVbDAhgLmQxO";
+$evolutionConfig = getEvolutionConfig($dadosgerais);
+$urlapi = $evolutionConfig['url'];
+$apikey = $evolutionConfig['key'];
 
 // Check connection status
 $statuscon = $connect->prepare("SELECT * FROM conexoes WHERE id_usuario = ?");

@@ -23,8 +23,10 @@ $query->execute([$cod_id]);
 $dadosgerais = $query->fetch(PDO::FETCH_OBJ);
 
 // Evolution API Configuration
-$urlapi = "http://whatsapp.painelcontrole.xyz:8080";
-$apikey = $dadosgerais->tokenapi ?? "4FAf4CAnP4jKtbhp6guW1HVbDAhgLmQxO";
+require_once __DIR__ . '/../config_evolution.php';
+$evolutionConfig = getEvolutionConfig($dadosgerais);
+$urlapi = $evolutionConfig['url'];
+$apikey = $evolutionConfig['key'];
 
 try {
     $instance_name = $input['instance_name'];

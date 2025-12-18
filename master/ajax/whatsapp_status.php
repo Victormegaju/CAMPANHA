@@ -29,8 +29,10 @@ try {
     }
     
     // Evolution API Configuration
-    $urlapi = "http://whatsapp.painelcontrole.xyz:8080";
-    $apikey = $dadosgerais->tokenapi ?? "4FAf4CAnP4jKtbhp6guW1HVbDAhgLmQxO";
+    require_once __DIR__ . '/../config_evolution.php';
+    $evolutionConfig = getEvolutionConfig($dadosgerais);
+    $urlapi = $evolutionConfig['url'];
+    $apikey = $evolutionConfig['key'];
     
     // Check instance status
     $ch = curl_init();
