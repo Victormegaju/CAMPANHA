@@ -1,0 +1,26 @@
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Log files
+*.log
+
+# Database backups
+*.sql.backup
+*.sql.bak
+
+# Configuration files (these should be ignored if they contain sensitive data)
+# Uncomment if you want to ignore the connection file
+# db/Conexao.php
