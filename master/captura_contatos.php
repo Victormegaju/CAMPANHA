@@ -6,16 +6,24 @@ $urlapi = "http://whatsapp.painelcontrole.xyz:8080";
 $apikey = $dadosgerais->tokenapi ?? "4FAf4CAnP4jKtbhp6guW1HVbDAhgLmQxO";
 
 // Check connection status
-$statuscon = $connect->query("SELECT * FROM conexoes WHERE id_usuario = '$cod_id'");
+$statuscon = $connect->prepare("SELECT * FROM conexoes WHERE id_usuario = ?");
+$statuscon->execute([$cod_id]);
 $dadoscon = $statuscon->fetch(PDO::FETCH_OBJ);
 
 // Get captured contacts
-$contacts_query = $connect->query("SELECT * FROM whatsapp_contacts WHERE id_usuario = '$cod_id' ORDER BY data_captura DESC");
+$contacts_query = $connect->prepare("SELECT * FROM whatsapp_contacts WHERE id_usuario = ? ORDER BY data_captura DESC");
+$contacts_query->execute([$cod_id]);
 $contacts = $contacts_query->fetchAll(PDO::FETCH_OBJ);
 
 // Count contacts by source
-$count_contacts = $connect->query("SELECT COUNT(*) as total FROM whatsapp_contacts WHERE id_usuario = '$cod_id' AND source = 'contacts'")->fetch(PDO::FETCH_OBJ)->total;
-$count_chats = $connect->query("SELECT COUNT(*) as total FROM whatsapp_contacts WHERE id_usuario = '$cod_id' AND source = 'chats'")->fetch(PDO::FETCH_OBJ)->total;
+$count_stmt1 = $connect->prepare("SELECT COUNT(*) as total FROM whatsapp_contacts WHERE id_usuario = ? AND source = 'contacts'");
+$count_stmt1->execute([$cod_id]);
+$count_contacts = $count_stmt1->fetch(PDO::FETCH_OBJ)->total;
+
+$count_stmt2 = $connect->prepare("SELECT COUNT(*) as total FROM whatsapp_contacts WHERE id_usuario = ? AND source = 'chats'");
+$count_stmt2->execute([$cod_id]);
+$count_chats = $count_stmt2->fetch(PDO::FETCH_OBJ)->total;
+
 $count_total = count($contacts);
 ?>
 
@@ -447,8 +455,6 @@ $count_total = count($contacts);
 <script src="../lib/bootstrap/js/bootstrap.js"></script>
 
 <script>
-const API_URL = '<?php echo $urlapi; ?>';
-const API_KEY = '<?php echo $apikey; ?>';
 const USER_ID = <?php echo $cod_id; ?>;
 const INSTANCE_NAME = '<?php echo $dadoscon->instance_name ?? ""; ?>';
 

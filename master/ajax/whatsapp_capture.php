@@ -18,7 +18,8 @@ if (!isset($input['action']) || !isset($input['instance_name'])) {
 }
 
 // Get user data
-$query = $connect->query("SELECT * FROM carteira WHERE Id = '$cod_id'");
+$query = $connect->prepare("SELECT * FROM carteira WHERE Id = ?");
+$query->execute([$cod_id]);
 $dadosgerais = $query->fetch(PDO::FETCH_OBJ);
 
 // Evolution API Configuration

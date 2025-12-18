@@ -14,11 +14,13 @@ $user_id = $_GET['user_id'] ?? $cod_id;
 
 try {
     // Get user data
-    $query = $connect->query("SELECT * FROM carteira WHERE Id = '$cod_id'");
+    $query = $connect->prepare("SELECT * FROM carteira WHERE Id = ?");
+    $query->execute([$cod_id]);
     $dadosgerais = $query->fetch(PDO::FETCH_OBJ);
     
     // Get connection info
-    $statuscon = $connect->query("SELECT * FROM conexoes WHERE id_usuario = '$cod_id'");
+    $statuscon = $connect->prepare("SELECT * FROM conexoes WHERE id_usuario = ?");
+    $statuscon->execute([$cod_id]);
     $dadoscon = $statuscon->fetch(PDO::FETCH_OBJ);
     
     if (!$dadoscon || !$dadoscon->instance_name) {

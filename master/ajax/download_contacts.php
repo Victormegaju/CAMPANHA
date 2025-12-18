@@ -11,7 +11,8 @@ $format = $_GET['format'] ?? 'csv';
 
 try {
     // Get contacts
-    $query = $connect->query("SELECT * FROM whatsapp_contacts WHERE id_usuario = '$cod_id' ORDER BY data_captura DESC");
+    $query = $connect->prepare("SELECT * FROM whatsapp_contacts WHERE id_usuario = ? ORDER BY data_captura DESC");
+    $query->execute([$cod_id]);
     $contacts = $query->fetchAll(PDO::FETCH_OBJ);
     
     if ($format === 'csv') {
