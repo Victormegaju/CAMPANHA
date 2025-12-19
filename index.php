@@ -126,6 +126,10 @@ createTablesAndAddColumnIfNotExist($connect);
       --login-border: rgba(255, 255, 255, 0.35);
       --login-shadow: rgba(0, 0, 0, 0.35);
       --login-text: #0f172a;
+      --login-bg-1: rgba(10, 10, 20, 0.82);
+      --login-bg-2: rgba(10, 10, 20, 0.94);
+      --login-bg-dark-1: rgba(10, 12, 18, 0.9);
+      --login-bg-dark-2: rgba(10, 12, 18, 0.98);
     }
     body.dark-mode {
       --login-surface: rgba(28, 31, 42, 0.9);
@@ -141,12 +145,12 @@ createTablesAndAddColumnIfNotExist($connect);
       align-items: center;
       justify-content: center;
       margin: 0;
-      background: linear-gradient(120deg, rgba(10, 10, 20, 0.82), rgba(10, 10, 20, 0.94)), url('<?php echo $bgImage; ?>');
+      background: linear-gradient(120deg, var(--login-bg-1), var(--login-bg-2)), url('<?php echo htmlspecialchars($bgImage, ENT_QUOTES, 'UTF-8'); ?>');
       background-size: cover;
       background-position: center;
     }
     body.dark-mode {
-      background: linear-gradient(120deg, rgba(10, 12, 18, 0.9), rgba(10, 12, 18, 0.98)), url('<?php echo $bgImage; ?>');
+      background: linear-gradient(120deg, var(--login-bg-dark-1), var(--login-bg-dark-2)), url('<?php echo htmlspecialchars($bgImage, ENT_QUOTES, 'UTF-8'); ?>');
       background-size: cover;
       background-position: center;
       color: var(--login-text);
@@ -300,7 +304,7 @@ createTablesAndAddColumnIfNotExist($connect);
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   
   <script>
-    (function() {
+    document.addEventListener('DOMContentLoaded', function() {
       var body = document.body;
       var toggle = document.getElementById('themeToggle');
       var icon = toggle ? toggle.querySelector('i') : null;
@@ -327,13 +331,16 @@ createTablesAndAddColumnIfNotExist($connect);
 
       restoreTheme();
 
-      if (toggle) {
-        toggle.addEventListener('click', function() {
-          var next = body.classList.contains('dark-mode') ? 'light' : 'dark';
-          setTheme(next);
-        });
+      if (!toggle) {
+        console.warn('Theme toggle element not found on page.');
+        return;
       }
-    })();
+
+      toggle.addEventListener('click', function() {
+        var next = body.classList.contains('dark-mode') ? 'light' : 'dark';
+        setTheme(next);
+      });
+    });
 
     function recaptchaCallback() { $("#submit").prop("disabled", false); }
 

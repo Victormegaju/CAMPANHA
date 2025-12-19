@@ -26,7 +26,7 @@ body.dark-mode {
     --card-glow: rgba(0, 0, 0, 0.25);
 }
 
-/* Cards com visual de vidro e brilho refletido */
+/* Glass cards with subtle reflected shine */
 .card,
 .dash-card,
 .summary-card {
@@ -79,7 +79,7 @@ body.dark-mode {
     z-index: 1;
 }
 
-/* Badge/Icon container padronizado */
+/* Standardized badge/icon container */
 .icon-badge,
 .dash-icon-circle {
     width: 56px;
@@ -104,10 +104,10 @@ body.dark-mode {
 
 .card-color-cycle .dash-icon-circle,
 .card-color-cycle .icon-badge {
-    background: var(--accent-current, var(--accent-1)) !important;
+    background: var(--accent-current, var(--accent-1));
 }
 
-/* Botão flutuante de tema para páginas fora do painel */
+/* Floating theme toggle for public pages */
 .theme-toggle {
     position: fixed;
     top: 18px;
@@ -137,7 +137,7 @@ body.dark-mode .theme-toggle {
     color: #f5f6fa;
 }
 
-/* Textos em modo escuro */
+/* Text adjustments when dark mode is active */
 body.dark-mode .card,
 body.dark-mode .dash-card,
 body.dark-mode .summary-card {
@@ -145,9 +145,9 @@ body.dark-mode .summary-card {
 }
 
 body.dark-mode .text-dark {
-    color: var(--text-strong) !important;
+    color: var(--text-strong);
 }
 
 body.dark-mode .text-muted {
-    color: var(--text-muted) !important;
+    color: var(--text-muted);
 }

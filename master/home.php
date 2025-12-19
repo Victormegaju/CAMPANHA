@@ -76,9 +76,7 @@ $url_base = "https://$_SERVER[HTTP_HOST]";
     <style>
         /* CSS FIXO PARA EVITAR BUGS DE DISPLAY */
         .dash-card {
-            background: linear-gradient(145deg, rgba(255,255,255,0.9), rgba(245,247,252,0.9)), url('https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=900&q=80');
-            background-size: cover;
-            background-position: center;
+            background: linear-gradient(145deg, var(--surface), var(--surface-muted));
             border-radius: 15px;
             padding: 25px 20px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.08);
