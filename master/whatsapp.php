@@ -13,43 +13,72 @@ $dadoscon = $statuscon->fetch(PDO::FETCH_OBJ);
 <style>
     .whatsapp-card {
         border: none;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
         overflow: hidden;
-        background: #fff;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
         max-width: 500px;
         margin: 0 auto;
+        border: 1px solid rgba(255, 255, 255, 0.2);
     }
+    
+    body.dark-mode .whatsapp-card {
+        background: rgba(26, 31, 46, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
     .wa-header {
-        background: #00a884; /* Verde WhatsApp */
+        background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
         color: white;
-        padding: 30px 20px;
+        padding: 35px 20px;
         text-align: center;
+        position: relative;
     }
+    
+    .wa-header::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+        transform: rotate(45deg);
+        animation: shine 3s infinite;
+    }
+    
+    @keyframes shine {
+        0%, 100% { left: -50%; }
+        50% { left: 150%; }
+    }
+    
     .wa-body {
         padding: 40px 30px;
         text-align: center;
     }
     .status-icon-box {
-        width: 100px;
-        height: 100px;
+        width: 110px;
+        height: 110px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         margin: 0 auto 25px auto;
-        font-size: 40px;
+        font-size: 45px;
     }
     .status-disconnected {
-        background-color: #f0f2f5;
-        color: #b1b3b5;
-        border: 2px dashed #b1b3b5;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        color: #6c757d;
+        border: 3px dashed #dee2e6;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
     .status-connected {
-        background-color: #e6fffa;
-        color: #00a884;
-        border: 2px solid #00a884;
+        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+        color: #25D366;
+        border: 3px solid #25D366;
         position: relative;
+        box-shadow: 0 5px 20px rgba(37, 211, 102, 0.3);
     }
     /* Animação de Pulso para status conectado */
     .pulse-ring {

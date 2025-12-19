@@ -1,0 +1,573 @@
+/* ========================================
+   MODERN THEME - PAINEL FINANCEIRO
+   Tema moderno com glassmorphism e cores vibrantes
+   ======================================== */
+
+:root {
+    /* Cores do Tema Claro */
+    --bg-light: #f5f7fa;
+    --card-light: #ffffff;
+    --text-light: #2d3748;
+    --border-light: #e2e8f0;
+    --shadow-light: rgba(0, 0, 0, 0.08);
+    
+    /* Cores do Tema Escuro */
+    --bg-dark: #0f1419;
+    --card-dark: #1a1f2e;
+    --text-dark: #e2e8f0;
+    --border-dark: #2d3748;
+    --shadow-dark: rgba(0, 0, 0, 0.3);
+    
+    /* Cores Vibrantes para Ícones (sem repetição - todas únicas) */
+    --color-1: #667eea;  /* Roxo */
+    --color-2: #f093fb;  /* Rosa */
+    --color-3: #4facfe;  /* Azul */
+    --color-4: #43e97b;  /* Verde */
+    --color-5: #fa709a;  /* Pink */
+    --color-6: #30cfd0;  /* Ciano */
+    --color-7: #a8edea;  /* Aqua */
+    --color-8: #feca57;  /* Amarelo */
+    --color-9: #ff6b6b;  /* Vermelho */
+    --color-10: #ee5a6f; /* Coral */
+    --color-11: #c471ed; /* Lavanda */
+    --color-12: #12c2e9; /* Oceano */
+    --color-13: #e056fd; /* Magenta (alterado) */
+    --color-14: #00f2fe; /* Azul Claro */
+    --color-15: #3b9cfe; /* Céu (alterado) */
+    --color-16: #f5af19; /* Laranja */
+    --color-17: #48c6ef; /* Azul Claro 2 */
+    --color-18: #6a11cb; /* Roxo Escuro */
+}
+
+/* ========================================
+   CONFIGURAÇÃO BASE
+   ======================================== */
+
+body {
+    background: var(--bg-light);
+    color: var(--text-light);
+    transition: all 0.3s ease;
+    font-family: 'Poppins', 'Inter', -apple-system, sans-serif;
+}
+
+body.dark-mode {
+    background: var(--bg-dark);
+    color: var(--text-dark);
+}
+
+/* ========================================
+   BOTÃO DE ALTERNÂNCIA DARK/LIGHT MODE
+   ======================================== */
+
+.theme-toggle-btn {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 10000;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 50px;
+    padding: 12px 24px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.theme-toggle-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(102, 126, 234, 0.5);
+}
+
+body.dark-mode .theme-toggle-btn {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    box-shadow: 0 8px 20px rgba(240, 147, 251, 0.4);
+}
+
+body.dark-mode .theme-toggle-btn:hover {
+    box-shadow: 0 12px 28px rgba(240, 147, 251, 0.5);
+}
+
+.theme-toggle-btn i {
+    font-size: 18px;
+}
+
+/* ========================================
+   CARDS MODERNOS COM GLASSMORPHISM
+   ======================================== */
+
+.modern-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 30px var(--shadow-light);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 25px;
+}
+
+body.dark-mode .modern-card {
+    background: rgba(26, 31, 46, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 10px 30px var(--shadow-dark);
+}
+
+.modern-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px var(--shadow-light);
+}
+
+body.dark-mode .modern-card:hover {
+    box-shadow: 0 15px 40px var(--shadow-dark);
+}
+
+/* Efeito de Brilho/Reflexo */
+.modern-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transform: rotate(45deg);
+    transition: all 0.5s ease;
+}
+
+.modern-card:hover::before {
+    left: 100%;
+}
+
+/* ========================================
+   CARDS DE ESTATÍSTICAS
+   ======================================== */
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    min-height: 140px;
+}
+
+body.dark-mode .stat-card {
+    background: rgba(26, 31, 46, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.stat-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+body.dark-mode .stat-card:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Ícone do Card */
+.stat-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-icon i {
+    font-size: 32px;
+    color: white;
+    z-index: 2;
+    position: relative;
+}
+
+/* Efeito de brilho no ícone */
+.stat-icon::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transform: rotate(45deg);
+    transition: all 0.5s ease;
+}
+
+.stat-card:hover .stat-icon::after {
+    right: 100%;
+}
+
+/* Conteúdo do Card */
+.stat-content {
+    flex: 1;
+}
+
+.stat-label {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.8;
+    margin-bottom: 8px;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 5px;
+}
+
+.stat-subtitle {
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+/* ========================================
+   CORES DOS ÍCONES (18 cores únicas)
+   ======================================== */
+
+.stat-icon.color-1 { background: linear-gradient(135deg, var(--color-1) 0%, #764ba2 100%); }
+.stat-icon.color-2 { background: linear-gradient(135deg, var(--color-2) 0%, #f5576c 100%); }
+.stat-icon.color-3 { background: linear-gradient(135deg, var(--color-3) 0%, #00c9fe 100%); }
+.stat-icon.color-4 { background: linear-gradient(135deg, var(--color-4) 0%, #38f9d7 100%); }
+.stat-icon.color-5 { background: linear-gradient(135deg, var(--color-5) 0%, #fee140 100%); }
+.stat-icon.color-6 { background: linear-gradient(135deg, var(--color-6) 0%, #0f9b0f 100%); }
+.stat-icon.color-7 { background: linear-gradient(135deg, var(--color-7) 0%, #fed373 100%); }
+.stat-icon.color-8 { background: linear-gradient(135deg, var(--color-8) 0%, #f77062 100%); }
+.stat-icon.color-9 { background: linear-gradient(135deg, var(--color-9) 0%, #ee5a6f 100%); }
+.stat-icon.color-10 { background: linear-gradient(135deg, var(--color-10) 0%, #b259ed 100%); }
+.stat-icon.color-11 { background: linear-gradient(135deg, var(--color-11) 0%, #f64f59 100%); }
+.stat-icon.color-12 { background: linear-gradient(135deg, var(--color-12) 0%, #a95de9 100%); }
+.stat-icon.color-13 { background: linear-gradient(135deg, var(--color-13) 0%, #5a4ed9 100%); }
+.stat-icon.color-14 { background: linear-gradient(135deg, var(--color-14) 0%, #a1c4fd 100%); }
+.stat-icon.color-15 { background: linear-gradient(135deg, var(--color-15) 0%, #1ad8fe 100%); }
+.stat-icon.color-16 { background: linear-gradient(135deg, var(--color-16) 0%, #f12711 100%); }
+.stat-icon.color-17 { background: linear-gradient(135deg, var(--color-17) 0%, #6f86d6 100%); }
+.stat-icon.color-18 { background: linear-gradient(135deg, var(--color-18) 0%, #2575fc 100%); }
+
+/* ========================================
+   RESPONSIVIDADE
+   ======================================== */
+
+@media (max-width: 768px) {
+    .stat-card {
+        padding: 20px;
+        min-height: 120px;
+    }
+    
+    .stat-icon {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .stat-icon i {
+        font-size: 26px;
+    }
+    
+    .stat-value {
+        font-size: 24px;
+    }
+    
+    .theme-toggle-btn {
+        padding: 10px 20px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 576px) {
+    .modern-card {
+        padding: 20px;
+        border-radius: 15px;
+    }
+    
+    .stat-card {
+        padding: 15px;
+        gap: 15px;
+        min-height: 100px;
+    }
+    
+    .stat-icon {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .stat-icon i {
+        font-size: 22px;
+    }
+    
+    .stat-value {
+        font-size: 20px;
+    }
+    
+    .stat-label {
+        font-size: 11px;
+    }
+}
+
+/* ========================================
+   EFEITOS ADICIONAIS
+   ======================================== */
+
+/* Animação de Pulse para valores importantes */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.stat-value.pulse {
+    animation: pulse 2s infinite;
+}
+
+/* Gradiente animado de fundo */
+@keyframes gradient-animation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.animated-gradient {
+    background-size: 200% 200%;
+    animation: gradient-animation 3s ease infinite;
+}
+
+/* Efeito de shimmer/loading */
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+.shimmer {
+    background: linear-gradient(
+        to right,
+        transparent 0%,
+        rgba(255, 255, 255, 0.3) 50%,
+        transparent 100%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+}
+
+/* ========================================
+   TABELAS MODERNAS
+   ======================================== */
+
+.modern-table {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+body.dark-mode .modern-table {
+    background: rgba(26, 31, 46, 0.95);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modern-table thead {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.modern-table thead th {
+    color: white !important;
+    font-weight: 600;
+    padding: 15px;
+    border: none !important;
+}
+
+.modern-table tbody tr {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+}
+
+body.dark-mode .modern-table tbody tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.modern-table tbody tr:hover {
+    background: rgba(102, 126, 234, 0.05);
+    transform: scale(1.01);
+}
+
+body.dark-mode .modern-table tbody tr:hover {
+    background: rgba(102, 126, 234, 0.1);
+}
+
+/* ========================================
+   BOTÕES MODERNOS
+   ======================================== */
+
+.modern-btn {
+    border-radius: 12px;
+    padding: 12px 28px;
+    font-weight: 600;
+    border: none;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.modern-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.modern-btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.modern-btn-success {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    color: white;
+}
+
+.modern-btn-danger {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+    color: white;
+}
+
+.modern-btn-info {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+}
+
+/* ========================================
+   BADGES MODERNOS
+   ======================================== */
+
+.modern-badge {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.badge-success {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    color: white;
+}
+
+.badge-danger {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+    color: white;
+}
+
+.badge-warning {
+    background: linear-gradient(135deg, #feca57 0%, #f77062 100%);
+    color: white;
+}
+
+.badge-info {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+}
+
+/* ========================================
+   HEADER MODERNO
+   ======================================== */
+
+.modern-header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+body.dark-mode .modern-header {
+    background: rgba(26, 31, 46, 0.95);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* ========================================
+   SIDEBAR MODERNO
+   ======================================== */
+
+.modern-sidebar {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+body.dark-mode .modern-sidebar {
+    background: rgba(26, 31, 46, 0.95);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* ========================================
+   SCROLLBAR MODERNO
+   ======================================== */
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+body.dark-mode ::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
