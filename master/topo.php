@@ -62,6 +62,7 @@ else { $saudacao = "Boa noite"; $iconeSaudacao = "fa-moon"; $corSaudacao = "text
     <link href="../lib/datatables/css/jquery.dataTables.css" rel="stylesheet">
     <link href="../lib/select2/css/select2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/slim.css">
+    <link rel="stylesheet" href="../styles/modern-theme.css">
     
     <!-- Estilos Personalizados -->
     <style>

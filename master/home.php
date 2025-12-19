@@ -76,20 +76,21 @@ $url_base = "https://$_SERVER[HTTP_HOST]";
     <style>
         /* CSS FIXO PARA EVITAR BUGS DE DISPLAY */
         .dash-card {
-            background: #fff;
+            background: linear-gradient(145deg, var(--surface), var(--surface-muted));
             border-radius: 15px;
             padding: 25px 20px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
             border: 1px solid #f0f0f0;
             margin-bottom: 25px;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             overflow: hidden;
             height: 100%;
             display: flex;
             align-items: center;
+            backdrop-filter: blur(4px);
         }
-        .dash-card:hover { transform: translateY(-5px); }
+        .dash-card:hover { transform: translateY(-5px); box-shadow: 0 12px 35px rgba(0,0,0,0.14); }
         
         .dash-icon-circle {
             width: 60px; height: 60px;
@@ -114,6 +115,9 @@ $url_base = "https://$_SERVER[HTTP_HOST]";
         .bg-red-gradient { background: linear-gradient(135deg, #e74c3c, #c0392b); }
         .bg-pink-gradient { background: linear-gradient(135deg, #e84393, #d63031); }
         .bg-dark-gradient { background: linear-gradient(135deg, #34495e, #2c3e50); }
+        .bg-amber-gradient { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .bg-cyan-gradient { background: linear-gradient(135deg, #06b6d4, #0ea5e9); }
+        .bg-silver-gradient { background: linear-gradient(135deg, #c0c6d4, #8b95a7); }
 
         /* Card Resumo Financeiro */
         .summary-card {
@@ -215,7 +219,7 @@ $url_base = "https://$_SERVER[HTTP_HOST]";
     <!-- LINHA 1: FINANCEIRO PRINCIPAL -->
     <div class="row row-xs mb-4">
       <!-- Recebidos Mês (Verde) -->
-      <div class="col-sm-6 col-lg-4 mb-3 mb-lg-0">
+      <div class="col-sm-6 col-lg-4 mb-3 mb-lg-0 card-color-cycle">
         <div class="dash-card">
           <div class="dash-icon-circle bg-green-gradient">
             <i class="fas fa-hand-holding-usd"></i>
@@ -228,7 +232,7 @@ $url_base = "https://$_SERVER[HTTP_HOST]";
       </div>
 
       <!-- Recebidos Hoje (Azul) -->
-      <div class="col-sm-6 col-lg-4 mb-3 mb-lg-0">
+      <div class="col-sm-6 col-lg-4 mb-3 mb-lg-0 card-color-cycle">
         <div class="dash-card">
           <div class="dash-icon-circle bg-blue-gradient">
             <i class="fas fa-calendar-day"></i>
@@ -242,7 +246,7 @@ $url_base = "https://$_SERVER[HTTP_HOST]";
       </div>
 
       <!-- A Receber (Laranja) -->
-      <div class="col-sm-6 col-lg-4">
+      <div class="col-sm-6 col-lg-4 card-color-cycle">
         <div class="dash-card">
           <div class="dash-icon-circle bg-orange-gradient">
             <i class="fas fa-clock"></i>
@@ -258,7 +262,7 @@ $url_base = "https://$_SERVER[HTTP_HOST]";
     <!-- LINHA 2: ESTATÍSTICAS (CORES ÚNICAS) -->
     <div class="row row-xs mb-4">
       <!-- Clientes (Roxo) -->
-      <div class="col-sm-6 col-lg-3 mb-3 mb-lg-0">
+      <div class="col-sm-6 col-lg-3 mb-3 mb-lg-0 card-color-cycle">
         <div class="dash-card">
           <div class="dash-icon-circle bg-purple-gradient" style="width: 50px; height: 50px; font-size: 1.5rem;">
             <i class="fas fa-users"></i>
@@ -271,7 +275,7 @@ $url_base = "https://$_SERVER[HTTP_HOST]";
       </div>
 
       <!-- Cobranças Ativas (Teal) -->
-      <div class="col-sm-6 col-lg-3 mb-3 mb-lg-0">
+      <div class="col-sm-6 col-lg-3 mb-3 mb-lg-0 card-color-cycle">
         <div class="dash-card">
           <div class="dash-icon-circle bg-teal-gradient" style="width: 50px; height: 50px; font-size: 1.5rem;">
             <i class="fas fa-file-invoice-dollar"></i>
@@ -284,7 +288,7 @@ $url_base = "https://$_SERVER[HTTP_HOST]";
       </div>
 
       <!-- Mensalidades Aberto (Vermelho) -->
-      <div class="col-sm-6 col-lg-3 mb-3 mb-lg-0">
+      <div class="col-sm-6 col-lg-3 mb-3 mb-lg-0 card-color-cycle">
         <div class="dash-card">
           <div class="dash-icon-circle bg-red-gradient" style="width: 50px; height: 50px; font-size: 1.5rem;">
             <i class="fas fa-exclamation-circle"></i>
@@ -297,7 +301,7 @@ $url_base = "https://$_SERVER[HTTP_HOST]";
       </div>
 
       <!-- Mensalidades Pagas (Rosa) -->
-      <div class="col-sm-6 col-lg-3">
+      <div class="col-sm-6 col-lg-3 card-color-cycle">
         <div class="dash-card">
           <div class="dash-icon-circle bg-pink-gradient" style="width: 50px; height: 50px; font-size: 1.5rem;">
             <i class="fas fa-check-double"></i>
@@ -340,17 +344,17 @@ $url_base = "https://$_SERVER[HTTP_HOST]";
     <!-- LINHA 4: BOTÕES DE AÇÃO -->
     <div class="row mb-4">
         <div class="col-md-4 mb-2">
-            <a href="clientes" class="btn-action-dash bg-blue-gradient">
+            <a href="clientes" class="btn-action-dash bg-amber-gradient">
                 <i class="fas fa-user-plus mr-2"></i> Cadastrar Clientes
             </a>
         </div>
         <div class="col-md-4 mb-2">
-            <a href="contas_pagar" class="btn-action-dash bg-red-gradient">
+            <a href="contas_pagar" class="btn-action-dash bg-cyan-gradient">
                 <i class="fas fa-minus-circle mr-2"></i> Contas a Pagar
             </a>
         </div>
         <div class="col-md-4 mb-2">
-            <a href="contas_receber" class="btn-action-dash bg-green-gradient">
+            <a href="contas_receber" class="btn-action-dash bg-silver-gradient">
                 <i class="fas fa-plus-circle mr-2"></i> Contas a Receber
             </a>
         </div>
