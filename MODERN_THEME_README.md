@@ -15,9 +15,9 @@ Este projeto implementa uma modernização completa do sistema de Painel de Cont
 ### 1. Sistema de Temas (Dark/Light Mode)
 
 **Arquivos:**
-- `/styles/modern-theme.css` - CSS principal do tema moderno
+- `/styles/modern-theme.css` - CSS principal com tema moderno e dark/light mode
 - `/js/theme-toggle.js` - JavaScript para alternância de tema
-- `/styles/dark-mode.css` - Estilos específicos do modo escuro
+- `/styles/dark-mode.css` - Estilos adicionais específicos do modo escuro (já existente)
 
 **Funcionalidades:**
 - Botão flutuante no topo direito para alternar entre claro/escuro
@@ -60,9 +60,9 @@ Cada cor é usada uma única vez nos ícones para criar visual vibrante e sem re
 | color-10 | Coral (#ee5a6f → #c471ed) | - |
 | color-11 | Lavanda (#c471ed → #f64f59) | - |
 | color-12 | Oceano (#12c2e9 → #c471ed) | - |
-| color-13 | Magenta (#f093fb → #667eea) | - |
+| color-13 | Magenta (#e056fd → #667eea) | - |
 | color-14 | Azul Claro (#00f2fe → #a1c4fd) | - |
-| color-15 | Céu (#4facfe → #00f2fe) | - |
+| color-15 | Céu (#3b9cfe → #00f2fe) | - |
 | color-16 | Laranja (#f5af19 → #f12711) | - |
 | color-17 | Azul Claro 2 (#48c6ef → #6f86d6) | - |
 | color-18 | Roxo Escuro (#6a11cb → #2575fc) | Contas a Pagar |

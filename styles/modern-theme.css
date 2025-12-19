@@ -18,7 +18,7 @@
     --border-dark: #2d3748;
     --shadow-dark: rgba(0, 0, 0, 0.3);
     
-    /* Cores Vibrantes para Ícones (sem repetição) */
+    /* Cores Vibrantes para Ícones (sem repetição - todas únicas) */
     --color-1: #667eea;  /* Roxo */
     --color-2: #f093fb;  /* Rosa */
     --color-3: #4facfe;  /* Azul */
@@ -31,9 +31,9 @@
     --color-10: #ee5a6f; /* Coral */
     --color-11: #c471ed; /* Lavanda */
     --color-12: #12c2e9; /* Oceano */
-    --color-13: #f093fb; /* Magenta */
+    --color-13: #e056fd; /* Magenta (alterado) */
     --color-14: #00f2fe; /* Azul Claro */
-    --color-15: #4facfe; /* Céu */
+    --color-15: #3b9cfe; /* Céu (alterado) */
     --color-16: #f5af19; /* Laranja */
     --color-17: #48c6ef; /* Azul Claro 2 */
     --color-18: #6a11cb; /* Roxo Escuro */
