@@ -118,8 +118,22 @@ createTablesAndAddColumnIfNotExist($connect);
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css">
+  <link rel="stylesheet" href="styles/modern-theme.css">
 
   <style>
+    :root {
+      --login-surface: rgba(255, 255, 255, 0.9);
+      --login-border: rgba(255, 255, 255, 0.35);
+      --login-shadow: rgba(0, 0, 0, 0.35);
+      --login-text: #0f172a;
+    }
+    body.dark-mode {
+      --login-surface: rgba(28, 31, 42, 0.9);
+      --login-border: rgba(255, 255, 255, 0.08);
+      --login-shadow: rgba(0, 0, 0, 0.65);
+      --login-text: #e5e7eb;
+    }
+
     body {
       font-family: 'Poppins', sans-serif;
       height: 100vh;
@@ -127,20 +141,50 @@ createTablesAndAddColumnIfNotExist($connect);
       align-items: center;
       justify-content: center;
       margin: 0;
-      background: linear-gradient(rgba(10, 10, 20, 0.85), rgba(10, 10, 20, 0.9)), url('<?php echo $bgImage; ?>');
+      background: linear-gradient(120deg, rgba(10, 10, 20, 0.82), rgba(10, 10, 20, 0.94)), url('<?php echo $bgImage; ?>');
       background-size: cover;
       background-position: center;
     }
+    body.dark-mode {
+      background: linear-gradient(120deg, rgba(10, 12, 18, 0.9), rgba(10, 12, 18, 0.98)), url('<?php echo $bgImage; ?>');
+      background-size: cover;
+      background-position: center;
+      color: var(--login-text);
+    }
 
     .login-card {
-      background: #ffffff;
+      background: var(--login-surface);
       width: 100%;
       max-width: 400px;
       padding: 40px;
       border-radius: 15px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+      border: 1px solid var(--login-border);
+      box-shadow: 0 15px 35px var(--login-shadow);
       position: relative;
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+      color: var(--login-text);
     }
+    .login-card::before {
+      content: "";
+      position: absolute;
+      inset: -40% auto auto -40%;
+      width: 120%;
+      height: 60%;
+      background: radial-gradient(circle at top left, rgba(255,255,255,0.3), transparent 60%);
+      transform: rotate(12deg);
+      opacity: 0.7;
+    }
+    .login-card::after {
+      content: "";
+      position: absolute;
+      inset: auto -30% -55% auto;
+      width: 130%;
+      height: 70%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18), transparent 65%);
+      transform: rotate(-14deg);
+    }
+    .login-card > * { position: relative; z-index: 1; }
 
     .brand-logo { text-align: center; margin-bottom: 30px; }
     .brand-logo img { height: 100px; object-fit: contain; }
@@ -148,10 +192,18 @@ createTablesAndAddColumnIfNotExist($connect);
     .input-group-custom { position: relative; margin-bottom: 20px; }
     .input-group-custom .form-control {
         height: 50px; padding-left: 50px; border-radius: 8px;
-        border: 1px solid #e3e6f0; background-color: #f8f9fc; font-size: 14px;
+        border: 1px solid #e3e6f0; background-color: #f8f9fc; font-size: 14px; color: var(--login-text);
     }
     .input-group-custom .form-control:focus {
         background-color: #fff; border-color: #4e73df; box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.1);
+    }
+    body.dark-mode .input-group-custom .form-control {
+        background-color: #1f2330;
+        border-color: #2f3545;
+        color: #e6e6e6;
+    }
+    body.dark-mode .input-group-custom .form-control:focus {
+        background-color: #232839; border-color: #6f42c1; box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.2);
     }
     .icon-holder {
         position: absolute; left: 0; top: 0; bottom: 0; width: 50px;
@@ -167,6 +219,7 @@ createTablesAndAddColumnIfNotExist($connect);
     }
     .btn-login:hover:not(:disabled) { transform: translateY(-2px); color: white; }
     .btn-login:disabled { background: #ccc; cursor: not-allowed; }
+    body.dark-mode .btn-login { background: linear-gradient(120deg, #6f42c1, #3b82f6); }
 
     .modal-content { border-radius: 15px; border: none; text-align: center; }
     .icon-modal { font-size: 40px; margin-bottom: 15px; }
@@ -176,6 +229,10 @@ createTablesAndAddColumnIfNotExist($connect);
 </head>
 
 <body>
+
+  <div class="theme-toggle" id="themeToggle" title="Alternar tema">
+    <i class="fas fa-moon"></i>
+  </div>
 
   <div class="login-card">
     <div class="brand-logo">
@@ -243,6 +300,41 @@ createTablesAndAddColumnIfNotExist($connect);
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   
   <script>
+    (function() {
+      var body = document.body;
+      var toggle = document.getElementById('themeToggle');
+      var icon = toggle ? toggle.querySelector('i') : null;
+
+      function setTheme(mode) {
+        if (mode === 'dark') {
+          body.classList.add('dark-mode');
+          if (icon) icon.className = 'fas fa-sun';
+        } else {
+          body.classList.remove('dark-mode');
+          if (icon) icon.className = 'fas fa-moon';
+        }
+        localStorage.setItem('mode', mode);
+      }
+
+      function restoreTheme() {
+        var saved = localStorage.getItem('mode');
+        if (saved === 'dark') {
+          setTheme('dark');
+        } else {
+          setTheme('light');
+        }
+      }
+
+      restoreTheme();
+
+      if (toggle) {
+        toggle.addEventListener('click', function() {
+          var next = body.classList.contains('dark-mode') ? 'light' : 'dark';
+          setTheme(next);
+        });
+      }
+    })();
+
     function recaptchaCallback() { $("#submit").prop("disabled", false); }
 
     $(document).ready(function () {
