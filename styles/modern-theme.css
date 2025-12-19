@@ -272,7 +272,7 @@ body.dark-mode .stat-card:hover {
 .stat-icon.color-10 { background: linear-gradient(135deg, var(--color-10) 0%, #b259ed 100%); }
 .stat-icon.color-11 { background: linear-gradient(135deg, var(--color-11) 0%, #f64f59 100%); }
 .stat-icon.color-12 { background: linear-gradient(135deg, var(--color-12) 0%, #a95de9 100%); }
-.stat-icon.color-13 { background: linear-gradient(135deg, var(--color-13) 0%, #667eea 100%); }
+.stat-icon.color-13 { background: linear-gradient(135deg, var(--color-13) 0%, #5a4ed9 100%); }
 .stat-icon.color-14 { background: linear-gradient(135deg, var(--color-14) 0%, #a1c4fd 100%); }
 .stat-icon.color-15 { background: linear-gradient(135deg, var(--color-15) 0%, #1ad8fe 100%); }
 .stat-icon.color-16 { background: linear-gradient(135deg, var(--color-16) 0%, #f12711 100%); }

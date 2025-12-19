@@ -59,8 +59,8 @@ Cada cor é usada uma única vez nos ícones para criar visual vibrante e sem re
 | color-9 | Vermelho (#ff6b6b → #ee5a6f) | Em Aberto |
 | color-10 | Coral (#ee5a6f → #c471ed) | - |
 | color-11 | Lavanda (#c471ed → #f64f59) | - |
-| color-12 | Oceano (#12c2e9 → #c471ed) | - |
-| color-13 | Magenta (#e056fd → #667eea) | - |
+| color-12 | Oceano (#12c2e9 → #a95de9) | - |
+| color-13 | Magenta (#e056fd → #5a4ed9) | - |
 | color-14 | Azul Claro (#00f2fe → #a1c4fd) | - |
 | color-15 | Céu (#3b9cfe → #00f2fe) | - |
 | color-16 | Laranja (#f5af19 → #f12711) | - |
