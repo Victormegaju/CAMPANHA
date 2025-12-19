@@ -74,67 +74,73 @@ $url_base = "https://$_SERVER[HTTP_HOST]";
     <!-- Certifique-se de que não há outros CSS conflitando -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        /* CSS FIXO PARA EVITAR BUGS DE DISPLAY */
-        .dash-card {
-            background: #fff;
-            border-radius: 15px;
-            padding: 25px 20px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-            border: 1px solid #f0f0f0;
-            margin-bottom: 25px;
-            transition: transform 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            height: 100%;
-            display: flex;
-            align-items: center;
+        /* Customizações adicionais específicas da página home */
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0;
         }
-        .dash-card:hover { transform: translateY(-5px); }
         
-        .dash-icon-circle {
-            width: 60px; height: 60px;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.8rem;
-            margin-right: 20px;
-            color: #fff;
-            flex-shrink: 0;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        .page-subtitle {
+            opacity: 0.7;
+            font-size: 0.9rem;
         }
-
-        .dash-content h2 { font-size: 1.5rem; font-weight: 800; margin: 0; color: #333; }
-        .dash-content p { margin: 0; color: #888; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; }
-
-        /* CORES ÚNICAS (SEM REPETIR) */
-        .bg-green-gradient { background: linear-gradient(135deg, #2ecc71, #27ae60); }
-        .bg-blue-gradient { background: linear-gradient(135deg, #3498db, #2980b9); }
-        .bg-orange-gradient { background: linear-gradient(135deg, #f39c12, #d35400); }
-        .bg-purple-gradient { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
-        .bg-teal-gradient { background: linear-gradient(135deg, #1abc9c, #16a085); }
-        .bg-red-gradient { background: linear-gradient(135deg, #e74c3c, #c0392b); }
-        .bg-pink-gradient { background: linear-gradient(135deg, #e84393, #d63031); }
-        .bg-dark-gradient { background: linear-gradient(135deg, #34495e, #2c3e50); }
-
-        /* Card Resumo Financeiro */
-        .summary-card {
-            background: #fff; border-radius: 15px; padding: 25px;
-            border-left: 5px solid #34495e;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            display: flex; align-items: center; justify-content: space-between;
-        }
-
+        
         /* Botões de Ação */
         .btn-action-dash {
-            display: block; width: 100%; padding: 15px;
-            border-radius: 12px; text-align: center; color: #fff;
-            font-weight: bold; text-decoration: none;
+            display: block; 
+            width: 100%; 
+            padding: 15px;
+            border-radius: 12px; 
+            text-align: center; 
+            color: #fff;
+            font-weight: bold; 
+            text-decoration: none;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: opacity 0.3s;
+            transition: all 0.3s ease;
         }
-        .btn-action-dash:hover { opacity: 0.9; color: #fff; text-decoration: none; }
+        .btn-action-dash:hover { 
+            opacity: 0.9; 
+            color: #fff; 
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
 
         /* Chart Container */
-        .chart-box { background: #fff; padding: 20px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        .chart-box { 
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        body.dark-mode .chart-box {
+            background: rgba(26, 31, 46, 0.95);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Summary Card */
+        .summary-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px; 
+            padding: 25px;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between;
+        }
+        
+        body.dark-mode .summary-card {
+            background: rgba(26, 31, 46, 0.95);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-left-color: #f093fb;
+        }
     </style>
 </head>
 
@@ -144,8 +150,8 @@ $url_base = "https://$_SERVER[HTTP_HOST]";
     <!-- CABEÇALHO -->
     <div class="d-flex align-items-center justify-content-between mb-4 mt-2">
       <div>
-        <h4 class="text-dark font-weight-bold mb-0">PAINEL FINANCEIRO</h4>
-        <p class="text-muted mb-0">Referência: <span class="badge badge-light border px-2"><?php print $mes; ?> / <?php print $ano; ?></span></p>
+        <h4 class="page-title">PAINEL FINANCEIRO</h4>
+        <p class="page-subtitle mb-0">Referência: <span class="badge badge-light border px-2"><?php print $mes; ?> / <?php print $ano; ?></span></p>
       </div>
       
       <div class="d-flex align-items-center">
@@ -214,42 +220,41 @@ $url_base = "https://$_SERVER[HTTP_HOST]";
 
     <!-- LINHA 1: FINANCEIRO PRINCIPAL -->
     <div class="row row-xs mb-4">
-      <!-- Recebidos Mês (Verde) -->
+      <!-- Recebidos Mês (Color 4 - Verde) -->
       <div class="col-sm-6 col-lg-4 mb-3 mb-lg-0">
-        <div class="dash-card">
-          <div class="dash-icon-circle bg-green-gradient">
+        <div class="stat-card">
+          <div class="stat-icon color-4">
             <i class="fas fa-hand-holding-usd"></i>
           </div>
-          <div class="dash-content">
-            <h2>R$ <?php echo number_format($valoresrecebidoss->totalpago ?? 0, 2, ',', '.'); ?></h2>
-            <p>Recebidos (Mês)</p>
+          <div class="stat-content">
+            <div class="stat-label">Recebidos (Mês)</div>
+            <div class="stat-value">R$ <?php echo number_format($valoresrecebidoss->totalpago ?? 0, 2, ',', '.'); ?></div>
           </div>
         </div>
       </div>
 
-      <!-- Recebidos Hoje (Azul) -->
+      <!-- Recebidos Hoje (Color 3 - Azul) -->
       <div class="col-sm-6 col-lg-4 mb-3 mb-lg-0">
-        <div class="dash-card">
-          <div class="dash-icon-circle bg-blue-gradient">
+        <div class="stat-card">
+          <div class="stat-icon color-3">
             <i class="fas fa-calendar-day"></i>
           </div>
-          <div class="dash-content">
-            <!-- PROTEÇÃO CONTRA VALOR NULO -->
-            <h2>R$ <?php echo number_format($valoresrecebidossh->totalrh ?? 0, 2, ',', '.'); ?></h2>
-            <p>Recebidos (Hoje)</p>
+          <div class="stat-content">
+            <div class="stat-label">Recebidos (Hoje)</div>
+            <div class="stat-value">R$ <?php echo number_format($valoresrecebidossh->totalrh ?? 0, 2, ',', '.'); ?></div>
           </div>
         </div>
       </div>
 
-      <!-- A Receber (Laranja) -->
+      <!-- A Receber (Color 8 - Amarelo/Laranja) -->
       <div class="col-sm-6 col-lg-4">
-        <div class="dash-card">
-          <div class="dash-icon-circle bg-orange-gradient">
+        <div class="stat-card">
+          <div class="stat-icon color-8">
             <i class="fas fa-clock"></i>
           </div>
-          <div class="dash-content">
-            <h2>R$ <?php echo number_format($valoresareceberx->totalparcela ?? 0, 2, ',', '.'); ?></h2>
-            <p>A Receber (Mês)</p>
+          <div class="stat-content">
+            <div class="stat-label">A Receber (Mês)</div>
+            <div class="stat-value">R$ <?php echo number_format($valoresareceberx->totalparcela ?? 0, 2, ',', '.'); ?></div>
           </div>
         </div>
       </div>
@@ -257,54 +262,54 @@ $url_base = "https://$_SERVER[HTTP_HOST]";
 
     <!-- LINHA 2: ESTATÍSTICAS (CORES ÚNICAS) -->
     <div class="row row-xs mb-4">
-      <!-- Clientes (Roxo) -->
+      <!-- Clientes (Color 1 - Roxo) -->
       <div class="col-sm-6 col-lg-3 mb-3 mb-lg-0">
-        <div class="dash-card">
-          <div class="dash-icon-circle bg-purple-gradient" style="width: 50px; height: 50px; font-size: 1.5rem;">
+        <div class="stat-card">
+          <div class="stat-icon color-1">
             <i class="fas fa-users"></i>
           </div>
-          <div class="dash-content">
-            <h2 style="font-size: 1.2rem;"><?php echo $cadclix; ?></h2>
-            <p style="font-size: 0.75rem;">Clientes</p>
+          <div class="stat-content">
+            <div class="stat-label">Clientes</div>
+            <div class="stat-value"><?php echo $cadclix; ?></div>
           </div>
         </div>
       </div>
 
-      <!-- Cobranças Ativas (Teal) -->
+      <!-- Cobranças Ativas (Color 6 - Teal) -->
       <div class="col-sm-6 col-lg-3 mb-3 mb-lg-0">
-        <div class="dash-card">
-          <div class="dash-icon-circle bg-teal-gradient" style="width: 50px; height: 50px; font-size: 1.5rem;">
+        <div class="stat-card">
+          <div class="stat-icon color-6">
             <i class="fas fa-file-invoice-dollar"></i>
           </div>
-          <div class="dash-content">
-            <h2 style="font-size: 1.2rem;"><?php echo $empativosx; ?></h2>
-            <p style="font-size: 0.75rem;">Ativas</p>
+          <div class="stat-content">
+            <div class="stat-label">Cobranças Ativas</div>
+            <div class="stat-value"><?php echo $empativosx; ?></div>
           </div>
         </div>
       </div>
 
-      <!-- Mensalidades Aberto (Vermelho) -->
+      <!-- Mensalidades Aberto (Color 9 - Vermelho) -->
       <div class="col-sm-6 col-lg-3 mb-3 mb-lg-0">
-        <div class="dash-card">
-          <div class="dash-icon-circle bg-red-gradient" style="width: 50px; height: 50px; font-size: 1.5rem;">
+        <div class="stat-card">
+          <div class="stat-icon color-9">
             <i class="fas fa-exclamation-circle"></i>
           </div>
-          <div class="dash-content">
-            <h2 style="font-size: 1.2rem;"><?php echo $parcelasabx; ?></h2>
-            <p style="font-size: 0.75rem;">Em Aberto</p>
+          <div class="stat-content">
+            <div class="stat-label">Em Aberto</div>
+            <div class="stat-value"><?php echo $parcelasabx; ?></div>
           </div>
         </div>
       </div>
 
-      <!-- Mensalidades Pagas (Rosa) -->
+      <!-- Mensalidades Pagas (Color 2 - Rosa) -->
       <div class="col-sm-6 col-lg-3">
-        <div class="dash-card">
-          <div class="dash-icon-circle bg-pink-gradient" style="width: 50px; height: 50px; font-size: 1.5rem;">
+        <div class="stat-card">
+          <div class="stat-icon color-2">
             <i class="fas fa-check-double"></i>
           </div>
-          <div class="dash-content">
-            <h2 style="font-size: 1.2rem;"><?php echo $parcelasapx; ?></h2>
-            <p style="font-size: 0.75rem;">Pagas</p>
+          <div class="stat-content">
+            <div class="stat-label">Pagas</div>
+            <div class="stat-value"><?php echo $parcelasapx; ?></div>
           </div>
         </div>
       </div>
@@ -315,22 +320,22 @@ $url_base = "https://$_SERVER[HTTP_HOST]";
         <div class="col-12">
             <div class="summary-card">
                 <div class="d-flex align-items-center">
-                    <div class="dash-icon-circle bg-dark-gradient mr-3">
+                    <div class="stat-icon color-18 mr-3">
                         <i class="fas fa-wallet"></i>
                     </div>
                     <div>
-                        <h6 class="font-weight-bold text-dark mb-1">CONTAS A PAGAR</h6>
-                        <small class="text-muted">Resumo de saídas do mês</small>
+                        <h6 class="font-weight-bold mb-1">CONTAS A PAGAR</h6>
+                        <small class="opacity-75">Resumo de saídas do mês</small>
                     </div>
                 </div>
                 <div class="text-right">
                     <div class="d-inline-block mr-4 text-center">
-                        <small class="d-block text-success font-weight-bold">PAGOS</small>
-                        <span class="h5 font-weight-bold text-dark">R$ <?php echo number_format($valorespagosx->totalpago ?? 0, 2, ',', '.'); ?></span>
+                        <small class="d-block font-weight-bold" style="color: #43e97b;">PAGOS</small>
+                        <span class="h5 font-weight-bold">R$ <?php echo number_format($valorespagosx->totalpago ?? 0, 2, ',', '.'); ?></span>
                     </div>
                     <div class="d-inline-block text-center">
-                        <small class="d-block text-danger font-weight-bold">A PAGAR</small>
-                        <span class="h5 font-weight-bold text-dark">R$ <?php echo number_format($valoresapagarx->totalapagar ?? 0, 2, ',', '.'); ?></span>
+                        <small class="d-block font-weight-bold" style="color: #ff6b6b;">A PAGAR</small>
+                        <span class="h5 font-weight-bold">R$ <?php echo number_format($valoresapagarx->totalapagar ?? 0, 2, ',', '.'); ?></span>
                     </div>
                 </div>
             </div>
@@ -340,17 +345,17 @@ $url_base = "https://$_SERVER[HTTP_HOST]";
     <!-- LINHA 4: BOTÕES DE AÇÃO -->
     <div class="row mb-4">
         <div class="col-md-4 mb-2">
-            <a href="clientes" class="btn-action-dash bg-blue-gradient">
+            <a href="clientes" class="btn-action-dash" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
                 <i class="fas fa-user-plus mr-2"></i> Cadastrar Clientes
             </a>
         </div>
         <div class="col-md-4 mb-2">
-            <a href="contas_pagar" class="btn-action-dash bg-red-gradient">
+            <a href="contas_pagar" class="btn-action-dash" style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);">
                 <i class="fas fa-minus-circle mr-2"></i> Contas a Pagar
             </a>
         </div>
         <div class="col-md-4 mb-2">
-            <a href="contas_receber" class="btn-action-dash bg-green-gradient">
+            <a href="contas_receber" class="btn-action-dash" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
                 <i class="fas fa-plus-circle mr-2"></i> Contas a Receber
             </a>
         </div>

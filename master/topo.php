@@ -56,12 +56,19 @@ else { $saudacao = "Boa noite"; $iconeSaudacao = "fa-moon"; $corSaudacao = "text
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title><?php echo isset($_nomesistema) ? $_nomesistema : 'Painel Financeiro'; ?></title>
     
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="../lib/Ionicons/css/ionicons.css" rel="stylesheet">
     <link href="../lib/datatables/css/jquery.dataTables.css" rel="stylesheet">
     <link href="../lib/select2/css/select2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/slim.css">
+    
+    <!-- Modern Theme CSS -->
+    <link rel="stylesheet" href="../styles/modern-theme.css">
+    <link rel="stylesheet" href="../styles/dark-mode.css">
     
     <!-- Estilos Personalizados -->
     <style>
@@ -238,6 +245,8 @@ else { $saudacao = "Boa noite"; $iconeSaudacao = "fa-moon"; $corSaudacao = "text
         }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Theme Toggle Script -->
+    <script src="../js/theme-toggle.js"></script>
 </head>
 
 <body>
